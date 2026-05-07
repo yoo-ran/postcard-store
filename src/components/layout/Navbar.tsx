@@ -4,7 +4,7 @@ import { useCartStore } from '@/store/cart.store';
 import { useState, useEffect } from 'react';
 
 export default function Navbar() {
-  const items = useCartStore((s) => s.items); // ← select items, not totalItems
+  const { items, totalItems } = useCartStore();
 
   const [mounted, setMounted] = useState(false);
 
@@ -23,7 +23,7 @@ export default function Navbar() {
             Shop
           </Link>
           <Link href='/cart' className='text-sm text-gray-600 hover:text-black'>
-            Cart ({mounted ? items.length : 0})
+            Cart ({mounted ? totalItems() : 0})
           </Link>
           <Link
             href='/login'
