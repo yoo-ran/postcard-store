@@ -1,6 +1,8 @@
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/types';
+import { useCartStore } from '@/store/cart.store';
 
 type ProductCardProps = {
   product: Product;
@@ -8,6 +10,7 @@ type ProductCardProps = {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const price = (product.price / 100).toFixed(2); // cents → dollars
+  const { addItem } = useCartStore();
 
   return (
     <div className='group border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow'>
@@ -31,7 +34,16 @@ export default function ProductCard({ product }: ProductCardProps) {
         </p>
         <div className='flex items-center justify-between mt-4'>
           <span className='font-semibold text-gray-900'>${price}</span>
-          <button className='bg-black text-white text-sm px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors'>
+          <button
+            onClick={() =>
+              addItem({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+              })
+            }
+            className='bg-black text-white text-sm px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors'
+          >
             Add to cart
           </button>
         </div>
