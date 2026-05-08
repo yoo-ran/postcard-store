@@ -4,11 +4,12 @@ import { useCartStore } from '@/store/cart.store';
 import { useState, useEffect } from 'react';
 
 export default function Navbar() {
-  const { items, totalItems } = useCartStore();
+  const { totalItems } = useCartStore();
 
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
