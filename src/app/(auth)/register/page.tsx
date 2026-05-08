@@ -1,7 +1,9 @@
+import RegisterForm from './RegisterForm';
+
 export const metadata = {
-  title: 'Sign in — Shop',
+  title: 'Create account — Shop',
 };
 
 export default function RegisterPage() {
-  return 'Register page test';
+  return <RegisterForm />;
 }
