@@ -40,6 +40,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 id: product.id,
                 name: product.name,
                 price: product.price,
+                imageUrl: product.imageUrl, // ← add this
               })
             }
             className='bg-black text-white text-sm px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors'
