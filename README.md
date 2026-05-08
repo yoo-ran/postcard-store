@@ -21,46 +21,51 @@ A production-grade full-stack ecommerce store for buying and sending postcards �
 ## 🧱 Tech stack
 
 ### Frontend
-| Tech | Purpose |
-|------|---------|
-| Next.js 14 (App Router) | SSR, routing, API routes |
-| TypeScript | End-to-end type safety |
-| Tailwind CSS | Responsive styling |
-| Zustand | Typed cart state management |
-| React Hook Form + Zod | Type-safe form validation |
+
+| Tech                    | Purpose                     |
+| ----------------------- | --------------------------- |
+| Next.js 14 (App Router) | SSR, routing, API routes    |
+| TypeScript              | End-to-end type safety      |
+| Tailwind CSS            | Responsive styling          |
+| Zustand                 | Typed cart state management |
+| React Hook Form + Zod   | Type-safe form validation   |
 
 ### Backend & Database
-| Tech | Purpose |
-|------|---------|
-| Next.js API Routes | Serverless backend |
-| Prisma ORM | Type-safe DB queries + migrations |
-| PostgreSQL on AWS RDS | Managed relational database |
-| NextAuth.js v5 | Auth with JWT sessions |
-| Stripe | Payments + webhook handling |
+
+| Tech                  | Purpose                           |
+| --------------------- | --------------------------------- |
+| Next.js API Routes    | Serverless backend                |
+| Prisma ORM            | Type-safe DB queries + migrations |
+| PostgreSQL on AWS RDS | Managed relational database       |
+| NextAuth.js v5        | Auth with JWT sessions            |
+| Stripe                | Payments + webhook handling       |
 
 ### Cloud (AWS)
-| Service | Purpose |
-|---------|---------|
-| RDS (PostgreSQL) | Managed DB with automated backups |
-| S3 | Postcard image storage |
-| CloudFront | CDN for fast global image delivery |
-| WAF | Web Application Firewall — blocks SQLi, XSS at edge |
-| SES | Transactional order confirmation emails |
-| Secrets Manager | Secure runtime secret injection |
+
+| Service          | Purpose                                             |
+| ---------------- | --------------------------------------------------- |
+| RDS (PostgreSQL) | Managed DB with automated backups                   |
+| S3               | Postcard image storage                              |
+| CloudFront       | CDN for fast global image delivery                  |
+| WAF              | Web Application Firewall — blocks SQLi, XSS at edge |
+| SES              | Transactional order confirmation emails             |
+| Secrets Manager  | Secure runtime secret injection                     |
 
 ### AI
-| Tech | Purpose |
-|------|---------|
-| Anthropic API (Claude) | AI postcard recommender |
-| Zod | Validates AI JSON output before DB queries |
+
+| Tech                   | Purpose                                    |
+| ---------------------- | ------------------------------------------ |
+| Anthropic API (Claude) | AI postcard recommender                    |
+| Zod                    | Validates AI JSON output before DB queries |
 
 ### DevOps
-| Tech | Purpose |
-|------|---------|
-| Vercel | App hosting + edge deployment |
+
+| Tech           | Purpose                                     |
+| -------------- | ------------------------------------------- |
+| Vercel         | App hosting + edge deployment               |
 | GitHub Actions | CI/CD — lint, type-check, tests on every PR |
-| Vitest | Unit tests |
-| Playwright | End-to-end tests |
+| Vitest         | Unit tests                                  |
+| Playwright     | End-to-end tests                            |
 
 ---
 
@@ -102,12 +107,14 @@ The Anthropic API response is treated as untrusted data. Every response is valid
 ## 🚀 Local setup
 
 ### Prerequisites
+
 - Node.js 18+
 - PostgreSQL (local or [Supabase](https://supabase.com) free tier)
 - Stripe account (test mode)
 - Anthropic API key
 
 ### 1. Clone and install
+
 ```bash
 git clone https://github.com/yoo-ran/postcard-store.git
 cd postcard-store
@@ -115,21 +122,26 @@ npm install
 ```
 
 ### 2. Set up environment variables
+
 ```bash
 cp .env.example .env.local
 ```
+
 Fill in all values in `.env.local` — see `.env.example` for the full list.
 
 ### 3. Set up the database
+
 ```bash
 npx prisma migrate dev
 npx prisma db seed
 ```
 
 ### 4. Run the dev server
+
 ```bash
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000)
 
 ---
@@ -169,20 +181,24 @@ src/
 
 ## 💡 Key engineering decisions
 
-| Decision | Why |
-|----------|-----|
-| Next.js over plain React | SSR for SEO on product pages; API routes remove need for separate backend |
-| Prisma over raw SQL | Auto-generates TypeScript types from schema — zero manual type writing |
-| AWS RDS over Supabase | Intentional — learn VPC config, security groups, and connection management |
-| Stripe Checkout over custom form | PCI-DSS compliance out of the box; never handle raw card data |
-| Zod for AI output | LLM responses are untrusted — validate before any DB interaction |
-| `--rebase` Git strategy | Clean linear history; no merge commits cluttering the log |
+| Decision                         | Why                                                                        |
+| -------------------------------- | -------------------------------------------------------------------------- |
+| Next.js over plain React         | SSR for SEO on product pages; API routes remove need for separate backend  |
+| Prisma over raw SQL              | Auto-generates TypeScript types from schema — zero manual type writing     |
+| AWS RDS over Supabase            | Intentional — learn VPC config, security groups, and connection management |
+| Stripe Checkout over custom form | PCI-DSS compliance out of the box; never handle raw card data              |
+| Zod for AI output                | LLM responses are untrusted — validate before any DB interaction           |
+| `--rebase` Git strategy          | Clean linear history; no merge commits cluttering the log                  |
 
 ---
 
 ## 📸 Screenshots
 
-> *(Coming soon — add screenshots of product listing, AI recommender, checkout flow)*
+![Homepage](screenshots/homepage.png)
+![Cart](screenshots/cart.png)
+![Product Detail](screenshots/productDetail.png)
+![Login](screenshots/login.png)
+![Register](screenshots/register.png)
 
 ---
 
@@ -192,4 +208,4 @@ Built by **Yoo-Ran** · [GitHub](https://github.com/yoo-ran) · [LinkedIn](https
 
 ---
 
-*This project was built as a portfolio piece to demonstrate full-stack web development, cloud infrastructure, payment integration, and AI feature development.*
+_This project was built as a portfolio piece to demonstrate full-stack web development, cloud infrastructure, payment integration, and AI feature development._
