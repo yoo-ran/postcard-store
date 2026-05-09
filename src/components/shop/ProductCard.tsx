@@ -9,7 +9,7 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const price = (product.price.toNumber() / 100).toFixed(2); // cents → dollars
+  const price = (Number(product.price) / 100).toFixed(2);
   const { addItem } = useCartStore();
 
   return (
