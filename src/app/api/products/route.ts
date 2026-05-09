@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { productQuerySchema } from '@/schemas/product.schema';
+import {
+  productListResponseSchema,
+  productQuerySchema,
+} from '@/schemas/product.schema';
 import type { Product } from '@prisma/client';
 
 export async function GET(request: NextRequest) {
@@ -28,7 +31,27 @@ export async function GET(request: NextRequest) {
       orderBy: { createdAt: 'desc' },
     });
 
-    return NextResponse.json<Product[]>(products);
+    const validated = productListResponseSchema.safeParse(
+      products.map((p) => ({
+        ...p,
+        price: Number(p.price),
+        createdAt: p.createdAt.toISOString(),
+        updatedAt: p.updatedAt.toISOString(),
+      })),
+    );
+
+    if (!validated.success) {
+      console.error(
+        '[GET /api/products] Response validation failed:',
+        validated.error,
+      );
+      return NextResponse.json(
+        { error: 'Unexpected data shape from database' },
+        { status: 500 },
+      );
+    }
+
+    return NextResponse.json(validated.data);
   } catch (error) {
     console.error('[GET /api/products]', error);
     return NextResponse.json(
