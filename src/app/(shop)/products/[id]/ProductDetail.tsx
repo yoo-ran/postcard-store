@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart.store';
-import type { Product } from '@/lib/products';
+import type { Product } from '@prisma/client';
 
 interface Props {
   product: Product;
@@ -16,7 +16,11 @@ export default function ProductDetail({ product }: Props) {
 
   function handleAddToCart() {
     console.log('Adding to cart:', product);
-    addItem(product);
+    addItem({
+      ...product,
+      price: Number(product.price),
+      imageUrl: product.imageUrl ?? undefined,
+    });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   }
@@ -58,7 +62,7 @@ export default function ProductDetail({ product }: Props) {
               </span>
             )}
             <Image
-              src={product.imageUrl}
+              src={product.imageUrl ?? '/placeholder.png'}
               alt={product.name}
               fill
               className='object-cover'
@@ -109,7 +113,7 @@ export default function ProductDetail({ product }: Props) {
             <div>
               <div className='flex items-baseline gap-3 mb-6'>
                 <span className='text-4xl font-bold text-[#1A1916] tracking-tight'>
-                  ${product.price}
+                  ${(Number(product.price) / 100).toFixed(2)}
                 </span>
                 <span className='text-sm text-[#A09A93]'>USD</span>
               </div>
