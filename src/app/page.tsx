@@ -1,7 +1,26 @@
-import { mockProducts } from '@/lib/mock-data';
-import ProductCard from '@/components/shop/ProductCard';
+import ProductCard from '@/components/shop/ProductCard'
+import type { Product } from '@prisma/client'
 
-export default function HomePage() {
+async function getProducts(): Promise<Product[]> {
+  try {
+    const res = await fetch('http://localhost:3000/api/products', {
+      cache: 'no-store',
+    })
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch products: ${res.status}`)
+    }
+
+    return res.json()
+  } catch (error) {
+    console.error('[HomePage] getProducts:', error)
+    return []
+  }
+}
+
+export default async function HomePage() {
+  const products = await getProducts()
+
   return (
     <div>
       <div className='mb-8'>
@@ -10,11 +29,15 @@ export default function HomePage() {
           Handpicked cards for every occasion
         </p>
       </div>
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-        {mockProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {products.length === 0 ? (
+        <p className='text-gray-500'>No products found.</p>
+      ) : (
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
     </div>
-  );
+  )
 }
