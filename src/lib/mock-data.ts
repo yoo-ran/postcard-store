@@ -65,7 +65,7 @@ export const mockProducts: Product[] = [
     imageUrl: 'https://d1r1t0ctsj0cph.cloudfront.net/test.jpg',
     stock: 45,
     category: 'travel',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+      createdAt: new Date(),
+  updatedAt: new Date(),
   },
 ];
