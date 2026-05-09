@@ -1,13 +1,12 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
-
 export interface CartItem {
   id: string;
   name: string;
   price: number; // in cents (avoid float rounding)
   quantity: number;
-  imageUrl?: string;
+  imageUrl?: string | null;
 }
 
 interface CartState {

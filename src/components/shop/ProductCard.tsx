@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Product } from '@/types';
+import { Product } from '@prisma/client';
 import { useCartStore } from '@/store/cart.store';
 
 type ProductCardProps = {
@@ -9,7 +9,7 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const price = (product.price / 100).toFixed(2); // cents → dollars
+  const price = (product.price.toNumber() / 100).toFixed(2); // cents → dollars
   const { addItem } = useCartStore();
 
   return (
@@ -17,7 +17,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link href={`/products/${product.id}`}>
         <div className='relative aspect-[4/3] overflow-hidden bg-gray-100'>
           <Image
-            src={product.imageUrl}
+            src={product.imageUrl ?? '/placeholder.png'}
             alt={product.name}
             fill
             className='object-cover group-hover:scale-105 transition-transform duration-300'
@@ -39,7 +39,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               addItem({
                 id: product.id,
                 name: product.name,
-                price: product.price,
+                price: product.price.toNumber() / 100, // convert cents to dollars
                 imageUrl: product.imageUrl, // ← add this
               })
             }
