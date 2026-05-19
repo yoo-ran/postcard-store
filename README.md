@@ -104,6 +104,47 @@ The Anthropic API response is treated as untrusted data. Every response is valid
 
 ---
 
+## ☁️ AWS Architecture
+
+### Diagram
+
+```mermaid
+flowchart LR
+    User["👤 User / Browser"]
+    Next["⚡ Next.js App\n(Vercel)"]
+    CF["☁️ CloudFront\nCDN"]
+    S3["🪣 S3 Bucket\nImage Storage"]
+    RDS["🗄️ RDS PostgreSQL\nDatabase"]
+
+    User -->|"Page request"| Next
+    Next -->|"Prisma query"| RDS
+    Next -->|"Image URL"| CF
+    CF -->|"Cache miss → fetch"| S3
+    CF -->|"Serve image"| User
+```
+
+### Services
+
+**🪣 S3 — Image Storage**
+Stores the 6 postcard images under the `postcards/` prefix. Not accessed directly by the browser — CloudFront acts as the intermediary, caching and serving assets from the nearest edge location.
+
+**☁️ CloudFront — CDN**
+Sits in front of S3 and delivers images faster by serving from AWS edge locations closest to the user. The app constructs all image URLs using `NEXT_PUBLIC_CLOUDFRONT_URL`.
+
+**🗄️ RDS PostgreSQL — Database**
+Managed PostgreSQL instance storing all product, cart, and order data. Connected via Prisma using `DATABASE_URL`.
+
+### Environment Variables
+
+| Variable                     | Description                                                                                         |
+| ---------------------------- | --------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_CLOUDFRONT_URL` | CloudFront URL including `/postcards` prefix — used to construct image URLs on the client           |
+| `DATABASE_URL`               | Full PostgreSQL connection string for Prisma. Format: `postgresql://user:password@host:5432/dbname` |
+
+> See `.env.example` for the full list of required environment variables.
+
+---
+
 ## 🚀 Local setup
 
 ### Prerequisites
