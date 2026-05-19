@@ -1,0 +1,37 @@
+import { PrismaClient, Prisma } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+const S3_BASE_URL = process.env.S3_BASE_URL 
+
+const products: Prisma.ProductCreateInput[] = [
+  { name: 'Postcard 1', slug: 'postcard-01', price: 4.99, stock: 100, imageUrl: `${S3_BASE_URL}/postcard-01.jpg`, category: 'travel' },
+  { name: 'Postcard 2', slug: 'postcard-02', price: 4.99, stock: 100, imageUrl: `${S3_BASE_URL}/postcard-02.jpg`, category: 'paris' },
+  { name: 'Postcard 3', slug: 'postcard-03', price: 4.99, stock: 100, imageUrl: `${S3_BASE_URL}/postcard-03.jpg`, category: 'postcards' },
+  { name: 'Postcard 4', slug: 'postcard-04', price: 4.99, stock: 100, imageUrl: `${S3_BASE_URL}/postcard-04.jpg`, category: 'postcards' },
+  { name: 'Postcard 5', slug: 'postcard-05', price: 4.99, stock: 100, imageUrl: `${S3_BASE_URL}/postcard-05.jpg`, category: 'postcards' },
+  { name: 'Postcard 6', slug: 'postcard-06', price: 4.99, stock: 100, imageUrl: `${S3_BASE_URL}/postcard-06.jpg`, category: 'postcards' },
+]
+
+async function main() {
+  console.log('🌱 Seeding database...')
+
+  for (const product of products) {
+    await prisma.product.upsert({
+      where: { slug: product.slug },
+      update: product,
+      create: product,
+    })
+  }
+
+  console.log('✅ 6 products seeded.')
+}
+
+main()
+  .catch((e) => {
+    console.error(e)
+    process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
