@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import type { Product } from '@prisma/client';
 import { productResponseSchema } from '@/schemas/product.schema';
 
 type Params = { params: Promise<{ id: string }> };
