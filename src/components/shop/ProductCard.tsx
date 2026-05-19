@@ -9,9 +9,10 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const price = (Number(product.price) / 100).toFixed(2);
-  const { addItem } = useCartStore();
-
+  const priceInDollars = Number(product.price) / 100;
+  const priceFormatted = priceInDollars.toFixed(2);
+  const addItem = useCartStore((state) => state.addItem);
+  
   return (
     <div className='group border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow'>
       <Link href={`/products/${product.id}`}>
@@ -34,14 +35,14 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.description}
         </p>
         <div className='flex items-center justify-between mt-4'>
-          <span className='font-semibold text-gray-900'>${price}</span>
+          <span className='font-semibold text-gray-900'>${priceFormatted}</span>
           <button
             onClick={() =>
               addItem({
                 id: product.id,
                 name: product.name,
-                price: product.price.toNumber() / 100, // convert cents to dollars
-                imageUrl: product.imageUrl, // ← add this
+                price: priceInDollars,
+                imageUrl: product.imageUrl,
               })
             }
             className='bg-black text-white text-sm px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors'

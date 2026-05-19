@@ -8,7 +8,7 @@ const products: Prisma.ProductCreateInput[] = [
   {
     name: 'Postcard 1',
     slug: 'postcard-01',
-    price: 4.99,
+    price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-01.jpg`,
     category: 'travel',
@@ -16,7 +16,7 @@ const products: Prisma.ProductCreateInput[] = [
   {
     name: 'Postcard 2',
     slug: 'postcard-02',
-    price: 4.99,
+    price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-02.jpg`,
     category: 'paris',
@@ -24,7 +24,7 @@ const products: Prisma.ProductCreateInput[] = [
   {
     name: 'Postcard 3',
     slug: 'postcard-03',
-    price: 4.99,
+    price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-03.jpg`,
     category: 'postcards',
@@ -32,7 +32,7 @@ const products: Prisma.ProductCreateInput[] = [
   {
     name: 'Postcard 4',
     slug: 'postcard-04',
-    price: 4.99,
+    price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-04.jpg`,
     category: 'postcards',
@@ -40,7 +40,7 @@ const products: Prisma.ProductCreateInput[] = [
   {
     name: 'Postcard 5',
     slug: 'postcard-05',
-    price: 4.99,
+    price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-05.jpg`,
     category: 'postcards',
@@ -48,7 +48,7 @@ const products: Prisma.ProductCreateInput[] = [
   {
     name: 'Postcard 6',
     slug: 'postcard-06',
-    price: 4.99,
+    price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-06.jpg`,
     category: 'postcards',
@@ -66,7 +66,7 @@ async function main() {
     });
   }
 
-  console.log('✅ 6 products seeded.');
+  console.log('✅ Successfully Seeded.');
 }
 
 main()
