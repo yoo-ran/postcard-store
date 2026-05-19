@@ -4,7 +4,6 @@ import {
   productListResponseSchema,
   productQuerySchema,
 } from '@/schemas/product.schema';
-import type { Product } from '@prisma/client';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
