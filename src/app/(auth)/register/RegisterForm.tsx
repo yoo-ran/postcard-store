@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { RegisterSchema } from '@/schemas/auth.schema';
 import Link from 'next/link';
 
 function EyeIcon() {
@@ -97,11 +99,58 @@ function PasswordInput({
 }
 
 export default function RegisterForm() {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const router = useRouter();
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [serverError, setServerError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const passwordMismatch =
-    confirmPassword.length > 0 && password !== confirmPassword;
+  const handleSubmit = async () => {
+    const result = RegisterSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as string;
+        fieldErrors[field] = issue.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setLoading(true);
+    setServerError('');
+
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (res.status === 409) {
+        setServerError('Email already registered');
+        return;
+      }
+
+      if (!res.ok) {
+        setServerError(data.error || 'Something went wrong');
+        return;
+      }
+
+      router.push('/login');
+    } catch {
+      setServerError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className='min-h-screen bg-[#F7F6F3] flex items-center justify-center px-4 py-12'>
@@ -116,7 +165,13 @@ export default function RegisterForm() {
 
         {/* Card */}
         <div className='bg-white rounded-3xl border border-[#EBEBEB] shadow-sm p-8'>
-          <form onSubmit={(e) => e.preventDefault()} noValidate>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+            noValidate
+          >
             <div className='flex flex-col gap-5'>
               {/* Name */}
               <div className='flex flex-col gap-1.5'>
@@ -131,8 +186,13 @@ export default function RegisterForm() {
                   type='text'
                   autoComplete='name'
                   placeholder='Jane Smith'
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className='w-full rounded-xl border border-[#E0DDD8] bg-[#F7F6F3] px-4 py-3 text-sm text-[#1A1916] placeholder-[#C9C5BF] outline-none transition-all focus:border-[#1A1916] focus:bg-white focus:ring-2 focus:ring-[#1A1916]/10'
                 />
+                {errors.name && (
+                  <p className='text-xs text-red-500 mt-0.5'>{errors.name}</p>
+                )}
               </div>
 
               {/* Email */}
@@ -148,8 +208,13 @@ export default function RegisterForm() {
                   type='email'
                   autoComplete='email'
                   placeholder='you@example.com'
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className='w-full rounded-xl border border-[#E0DDD8] bg-[#F7F6F3] px-4 py-3 text-sm text-[#1A1916] placeholder-[#C9C5BF] outline-none transition-all focus:border-[#1A1916] focus:bg-white focus:ring-2 focus:ring-[#1A1916]/10'
                 />
+                {errors.email && (
+                  <p className='text-xs text-red-500 mt-0.5'>{errors.email}</p>
+                )}
               </div>
 
               {/* Password */}
@@ -157,8 +222,9 @@ export default function RegisterForm() {
                 id='password'
                 label='Password'
                 autoComplete='new-password'
-                value={password}
-                onChange={setPassword}
+                value={form.password}
+                onChange={(v) => setForm({ ...form, password: v })}
+                error={errors.password}
               />
 
               {/* Confirm Password */}
@@ -166,18 +232,25 @@ export default function RegisterForm() {
                 id='confirm-password'
                 label='Confirm Password'
                 autoComplete='new-password'
-                value={confirmPassword}
-                onChange={setConfirmPassword}
-                error={passwordMismatch ? 'Passwords do not match' : undefined}
+                value={form.confirmPassword}
+                onChange={(v) => setForm({ ...form, confirmPassword: v })}
+                error={errors.confirmPassword}
               />
+
+              {/* Server error */}
+              {serverError && (
+                <p className='text-xs text-red-500 text-center'>
+                  {serverError}
+                </p>
+              )}
 
               {/* Submit */}
               <button
                 type='submit'
-                disabled={passwordMismatch}
+                disabled={loading}
                 className='mt-1 w-full rounded-2xl bg-[#1A1916] py-3.5 text-sm font-semibold text-white tracking-wide transition-all hover:bg-[#2D2C2A] active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100'
               >
-                Create account
+                {loading ? 'Creating account...' : 'Create account'}
               </button>
             </div>
           </form>
