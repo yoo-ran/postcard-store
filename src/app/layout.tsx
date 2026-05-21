@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body data-gramm='false' data-gramm_editor='false'>
+      <body suppressHydrationWarning>
         <Navbar />
         <main className='mx-auto max-w-6xl px-4 py-8'>{children}</main>
         <Footer />

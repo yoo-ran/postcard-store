@@ -42,30 +42,67 @@
 //   )
 // }
 
-import { auth, signIn, signOut } from "@/auth"
-// import { auth } from '@/auth';
+import { auth, signIn, signOut } from '@/auth';
+import { LoginSchema, RegisterSchema } from '@/schemas/auth.schema';
+
+// ✅ should pass
+console.log(
+  LoginSchema.safeParse({ email: 'test@test.com', password: 'password123' }),
+);
+
+// ❌ should fail — invalid email and short password
+console.log(LoginSchema.safeParse({ email: 'notanemail', password: '123' }));
+
+// ✅ should pass
+console.log(
+  RegisterSchema.safeParse({
+    name: 'John',
+    email: 'john@test.com',
+    password: 'password123',
+    confirmPassword: 'password123',
+  }),
+);
+
+// ❌ should fail — passwords don't match
+console.log(
+  RegisterSchema.safeParse({
+    name: 'John',
+    email: 'john@test.com',
+    password: 'password123',
+    confirmPassword: 'different',
+  }),
+);
 
 export default async function Home() {
-  const session = await auth()
-
+  const session = await auth();
 
   // console.log(session?.user?.userId); // e.g. "clx9abc123..."
   // console.log(session?.user?.role); // e.g. "USER"
-  
+
   return (
     <main>
       {session ? (
         <>
           <p>Signed in as {session.user?.email}</p>
-          <form action={async () => { "use server"; await signOut() }}>
-            <button type="submit">Sign out</button>
+          <form
+            action={async () => {
+              'use server';
+              await signOut();
+            }}
+          >
+            <button type='submit'>Sign out</button>
           </form>
         </>
       ) : (
-        <form action={async () => { "use server"; await signIn("google") }}>
-          <button type="submit">Sign in with Google</button>
+        <form
+          action={async () => {
+            'use server';
+            await signIn('google');
+          }}
+        >
+          <button type='submit'>Sign in with Google</button>
         </form>
       )}
     </main>
-  )
+  );
 }
