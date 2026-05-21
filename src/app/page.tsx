@@ -43,10 +43,15 @@
 // }
 
 import { auth, signIn, signOut } from "@/auth"
+// import { auth } from '@/auth';
 
 export default async function Home() {
   const session = await auth()
 
+
+  // console.log(session?.user?.userId); // e.g. "clx9abc123..."
+  // console.log(session?.user?.role); // e.g. "USER"
+  
   return (
     <main>
       {session ? (
