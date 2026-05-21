@@ -41,38 +41,7 @@
 //     </div>
 //   )
 // }
-
 import { auth, signIn, signOut } from '@/auth';
-import { LoginSchema, RegisterSchema } from '@/schemas/auth.schema';
-
-// ✅ should pass
-console.log(
-  LoginSchema.safeParse({ email: 'test@test.com', password: 'password123' }),
-);
-
-// ❌ should fail — invalid email and short password
-console.log(LoginSchema.safeParse({ email: 'notanemail', password: '123' }));
-
-// ✅ should pass
-console.log(
-  RegisterSchema.safeParse({
-    name: 'John',
-    email: 'john@test.com',
-    password: 'password123',
-    confirmPassword: 'password123',
-  }),
-);
-
-// ❌ should fail — passwords don't match
-console.log(
-  RegisterSchema.safeParse({
-    name: 'John',
-    email: 'john@test.com',
-    password: 'password123',
-    confirmPassword: 'different',
-  }),
-);
-
 export default async function Home() {
   const session = await auth();
 
