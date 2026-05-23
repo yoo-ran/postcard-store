@@ -24,7 +24,7 @@ A production-grade full-stack ecommerce store for buying and sending postcards �
 
 | Tech                    | Purpose                     |
 | ----------------------- | --------------------------- |
-| Next.js 14 (App Router) | SSR, routing, API routes    |
+| Next.js 15 (App Router) | SSR, routing, API routes    |
 | TypeScript              | End-to-end type safety      |
 | Tailwind CSS            | Responsive styling          |
 | Zustand                 | Typed cart state management |
@@ -75,7 +75,7 @@ A production-grade full-stack ecommerce store for buying and sending postcards �
 Browser
   │
   ▼
-Vercel (Next.js 14 App Router)
+Vercel (Next.js 15 App Router)
   ├── Server Components  →  AWS RDS (PostgreSQL via Prisma)
   ├── API Routes         →  Stripe / Anthropic API / AWS SES
   └── Static Assets      →  AWS S3 + CloudFront CDN
@@ -85,6 +85,56 @@ Vercel (Next.js 14 App Router)
                            AWS Secrets Manager
                         (injects secrets at runtime)
 ```
+
+---
+
+## 🔐 Authentication
+
+### Login options
+
+| Method       | Description                                                              |
+| ------------ | ------------------------------------------------------------------------ |
+| Credentials  | Email and password — password hashed with bcrypt before storing in RDS   |
+| Google OAuth | One-click sign in via Google — credentials stored in AWS Secrets Manager |
+
+Both providers are handled by **NextAuth.js v5** with JWT sessions. The session token is stored in a secure HTTP-only cookie (`authjs.session-token`).
+
+### How it works
+
+1. User registers with email + password → password is hashed with bcrypt (`$2b$` prefix) and stored in RDS — plain text is never stored
+2. User signs in → NextAuth validates credentials, issues a signed JWT session token
+3. Session is available across the app via `useSession` (enabled by `SessionProvider` wrapping the root layout)
+4. The Navbar reads session state and shows the user's name and "Sign out" when authenticated
+
+### Protected routes
+
+The following routes are protected by `src/middleware.ts`. Unauthenticated users are redirected to `/login?callbackUrl=<original-path>`:
+
+| Route         | Protection         |
+| ------------- | ------------------ |
+| `/checkout`   | Authenticated only |
+| `/checkout/*` | Authenticated only |
+| `/account/*`  | Authenticated only |
+| `/orders/*`   | Authenticated only |
+
+Public routes (`/`, `/shop`, `/login`, `/register`) are unaffected by the middleware.
+
+### Environment variables
+
+| Variable             | Description                                                |
+| -------------------- | ---------------------------------------------------------- |
+| `AUTH_SECRET`        | Secret used to sign and verify NextAuth JWT tokens         |
+| `NEXTAUTH_SECRET`    | Legacy NextAuth secret (kept for compatibility)            |
+| `NEXTAUTH_URL`       | Base URL of the app (e.g. `http://localhost:3000`)         |
+| `AUTH_GOOGLE_ID`     | Google OAuth client ID — stored in AWS Secrets Manager     |
+| `AUTH_GOOGLE_SECRET` | Google OAuth client secret — stored in AWS Secrets Manager |
+
+### Google OAuth setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Create a new project → Enable the **Google+ API**
+3. Create OAuth 2.0 credentials → add `http://localhost:3000/api/auth/callback/google` as an authorised redirect URI
+4. Copy the client ID and secret into AWS Secrets Manager under the secret name `postcard-store-google-oauth` with keys `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`
 
 ---
 
@@ -98,6 +148,9 @@ Malicious requests (SQLi, XSS, bad bots) are blocked at the CloudFront edge befo
 
 **Why AWS Secrets Manager over .env in production?**
 Environment variables in deployment configs can be leaked via logs or misconfigured CI pipelines. Secrets Manager injects values at runtime via the AWS SDK — they never appear in config files or source code.
+
+**Why bcrypt for password hashing?**
+bcrypt is a slow, adaptive hashing algorithm designed for passwords. Unlike MD5 or SHA-256, its cost factor can be increased over time as hardware gets faster — making brute-force attacks impractical. Passwords are never stored or logged in plain text.
 
 **Why Zod on AI output?**
 The Anthropic API response is treated as untrusted data. Every response is validated against a Zod schema before any product ID touches the database — hallucinated or malformed IDs are caught and rejected gracefully.
@@ -211,8 +264,10 @@ src/
 ├── components/
 │   ├── ui/              # Reusable UI components
 │   ├── shop/            # ProductCard, CartDrawer
+│   ├── layout/          # Navbar, Footer
 │   └── ai/              # AI Recommender component
 ├── lib/                 # Prisma, Stripe, Anthropic, AWS singletons
+├── middleware.ts        # Route protection — redirects unauthenticated users
 ├── schemas/             # Zod schemas shared across frontend + API
 ├── store/               # Zustand cart store
 └── types/               # Shared TypeScript types
@@ -229,6 +284,8 @@ src/
 | AWS RDS over Supabase            | Intentional — learn VPC config, security groups, and connection management |
 | Stripe Checkout over custom form | PCI-DSS compliance out of the box; never handle raw card data              |
 | Zod for AI output                | LLM responses are untrusted — validate before any DB interaction           |
+| bcrypt for passwords             | Slow adaptive hashing — brute-force resistant, never stores plain text     |
+| Middleware for route protection  | Enforces auth at the Edge before any page renders — no client-side gaps    |
 | `--rebase` Git strategy          | Clean linear history; no merge commits cluttering the log                  |
 
 ---
