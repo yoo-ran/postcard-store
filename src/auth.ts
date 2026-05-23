@@ -23,6 +23,9 @@ const { AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET } = await (async () => {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: 'jwt' },
+  pages: {
+    signIn: '/auth/signin',
+  },
   providers: [
     Google({
       clientId: AUTH_GOOGLE_ID,
@@ -56,6 +59,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      if (url.startsWith(baseUrl)) return url;
+      return baseUrl;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.userId = user.id;

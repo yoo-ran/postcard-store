@@ -1,0 +1,452 @@
+
+> postcard-store@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.163:3000
+- Environments: .env.local, .env
+✓ Ready in 799ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+○ Compiling /login ...
+ GET /login 200 in 4.4s (next.js: 3.8s, application-code: 573ms)
+(node:61236) Warning: NodeVersionSupportWarning: The AWS SDK for JavaScript (v3)
+versions published after the first week of January 2027
+will require node >=22. You are running node v20.12.1.
+
+To continue receiving updates to AWS services, bug fixes,
+and security updates please upgrade to node >=22.
+
+More information can be found at: https://a.co/c895JFp
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61615) Warning: NodeVersionSupportWarning: The AWS SDK for JavaScript (v3)
+versions published after the first week of January 2027
+will require node >=22. You are running node v20.12.1.
+
+To continue receiving updates to AWS services, bug fixes,
+and security updates please upgrade to node >=22.
+
+More information can be found at: https://a.co/c895JFp
+(Use `node --trace-warnings ...` to show where the warning was created)
+ GET /api/auth/providers 200 in 5.7s (next.js: 5.7s, application-code: 34ms)
+ GET /api/auth/csrf 200 in 18ms (next.js: 9ms, application-code: 9ms)
+(node:61619) Warning: NodeVersionSupportWarning: The AWS SDK for JavaScript (v3)
+versions published after the first week of January 2027
+will require node >=22. You are running node v20.12.1.
+
+To continue receiving updates to AWS services, bug fixes,
+and security updates please upgrade to node >=22.
+
+More information can be found at: https://a.co/c895JFp
+(Use `node --trace-warnings ...` to show where the warning was created)
+dbUser: { role: 'USER' }
+ POST /api/auth/callback/credentials? 200 in 1443ms (next.js: 7ms, application-code: 1436ms)
+○ Compiling / ...
+(node:61236) Warning: NodeVersionSupportWarning: The AWS SDK for JavaScript (v3)
+versions published after the first week of January 2027
+will require node >=22. You are running node v20.12.1.
+
+To continue receiving updates to AWS services, bug fixes,
+and security updates please upgrade to node >=22.
+
+More information can be found at: https://a.co/c895JFp
+ GET / 200 in 4.4s (next.js: 3.7s, application-code: 715ms)
+⨯ Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/edge/chunks/node_modules_05y9qop._.js'
+    at ignore-listed frames
+⨯ Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/static/development/_buildManifest.js.tmp.aoc3da3tnnc'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/static/development/_buildManifest.js.tmp.aoc3da3tnnc'
+}
+⨯ Error: Cannot find module '../../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/app/_not-found/page.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/app/_not-found/page.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/_not-found/page.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+}
+ GET /checkout 500 in 3.7s (next.js: 110ms, proxy.ts: 3.6s, application-code: 38ms)
+Persisting failed: Unable to write SST file 00000049.sst
+
+Caused by:
+    No such file or directory (os error 2)
+Compaction failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+⨯ Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+}
+ GET / 500 in 249ms (next.js: 222ms, application-code: 26ms)
+ GET / 500 in 249ms (next.js: 222ms, application-code: 26ms)
+⨯ Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+}
+ GET / 500 in 202ms (next.js: 178ms, application-code: 24ms)
+ GET / 500 in 202ms (next.js: 178ms, application-code: 24ms)
+⨯ Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+}
+ GET / 500 in 238ms (next.js: 210ms, application-code: 28ms)
+ GET / 500 in 238ms (next.js: 210ms, application-code: 28ms)
+Compaction failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+⨯ Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+}
+ GET / 500 in 288ms (next.js: 258ms, application-code: 30ms)
+ GET / 500 in 288ms (next.js: 258ms, application-code: 30ms)
+Compaction failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+⨯ Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/server/app/page/build-manifest.json'
+}
+⨯ Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- /Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js
+- /Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js
+    at Object.<anonymous> (.next/dev/server/pages/_document.js:1:7) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/uoorn/Desktop/postcard-store/.next/dev/server/pages/_document.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/require.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/load-components.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/build/utils.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/router-server.js',
+    '/Users/uoorn/Desktop/postcard-store/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/uoorn/Desktop/postcard-store/.next/dev/routes-manifest.json'
+}
+ GET / 500 in 232ms (next.js: 205ms, application-code: 28ms)
+ GET / 500 in 232ms (next.js: 205ms, application-code: 28ms)

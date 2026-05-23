@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { LoginSchema } from '@/schemas/auth.schema';
 import Link from 'next/link';
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -15,8 +16,13 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
+    console.log('handleSubmit called'); // ← add this
+    console.log('form:', form); // ← and this
+
     // 1. client side validation
     const result = LoginSchema.safeParse(form);
+    console.log('validation:', result); // ← and this
+
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       result.error.issues.forEach((issue) => {
@@ -37,6 +43,7 @@ export default function LoginForm() {
         email: form.email,
         password: form.password,
       });
+      console.log('res:', JSON.stringify(res)); // ← add this
 
       if (res?.error) {
         setServerError('Invalid email or password');
@@ -44,7 +51,11 @@ export default function LoginForm() {
       }
 
       // 3. redirect to home on success
-      router.push('/');
+      const callbackUrl = searchParams.get('callbackUrl') || '/';
+      console.log('callbackUrl:', callbackUrl); // ← add this
+      window.location.replace(callbackUrl);
+
+      // router.push(callbackUrl);
     } catch {
       setServerError('Something went wrong. Please try again.');
     } finally {
