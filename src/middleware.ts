@@ -3,9 +3,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({
-    req: req as any,
-    secret: process.env.NEXTAUTH_SECRET,
+    req: req as Parameters<typeof getToken>[0]['req'],
+    secret: process.env.AUTH_SECRET,
+    cookieName: 'authjs.session-token',
   });
+
+  console.log('token:', token); // ← add this
 
   if (!token) {
     const signInUrl = new URL('/login', req.url);
