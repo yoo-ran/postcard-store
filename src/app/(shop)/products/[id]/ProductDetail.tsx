@@ -15,7 +15,6 @@ export default function ProductDetail({ product }: Props) {
   const [added, setAdded] = useState(false);
 
   function handleAddToCart() {
-    console.log('Adding to cart:', product);
     addItem({
       ...product,
       price: Number(product.price),
