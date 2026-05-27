@@ -91,6 +91,19 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    await Promise.all(
+      order.orderItems.map((item) =>
+        prisma.product.update({
+          where: { id: item.productId },
+          data: {
+            stock: {
+              decrement: item.quantity,
+            },
+          },
+        }),
+      ),
+    );
+
     // Send confirmation email after order is saved
     await sendOrderConfirmationEmail({
       orderId: order.id,
@@ -102,8 +115,8 @@ export async function POST(req: NextRequest) {
       })),
       total: Number(order.total),
     });
-    // Order creation goes here in the next task
-    console.log('New event — ready to create order for session:', session.id);
+
+    console.log('Order created and stock decremented for session:', session.id);
   }
 
   return NextResponse.json({ received: true }, { status: 200 });
