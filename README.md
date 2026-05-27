@@ -2,7 +2,7 @@
 
 A production-grade full-stack ecommerce store for buying and sending postcards — built to demonstrate modern web development practices across frontend, backend, cloud infrastructure, security, and AI integration.
 
-> **Live demo:** [postcard-store.vercel.app](https://postcard-store.vercel.app) &nbsp;|&nbsp; **Built by:** [Yoo-Ran](https://github.com/yoo-ran)
+> **Live demo:** 🚧 **Coming soon** &nbsp;|&nbsp; **Built by:** [Yoo-Ran](https://github.com/yoo-ran)
 
 ---
 
