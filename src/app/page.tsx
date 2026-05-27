@@ -1,27 +1,51 @@
-import ProductCard from '@/components/shop/ProductCard'
-import type { Product } from '@prisma/client'
+import ProductCard from '@/components/shop/ProductCard';
+import type { Product } from '@prisma/client';
+import { auth, signIn, signOut } from '@/auth';
 
 async function getProducts(): Promise<Product[]> {
   try {
     const res = await fetch('http://localhost:3000/api/products', {
       cache: 'no-store',
-    })
+    });
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch products: ${res.status}`)
+      throw new Error(`Failed to fetch products: ${res.status}`);
     }
 
-    return res.json()
+    return res.json();
   } catch (error) {
-    return []
+    return [];
   }
 }
 
 export default async function HomePage() {
-  const products = await getProducts()
+  const products = await getProducts();
+  const session = await auth();
 
   return (
     <div>
+      {session ? (
+        <>
+          <p>Signed in as {session.user?.email}</p>
+          <form
+            action={async () => {
+              'use server';
+              await signOut();
+            }}
+          >
+            <button type='submit'>Sign out</button>
+          </form>
+        </>
+      ) : (
+        <form
+          action={async () => {
+            'use server';
+            await signIn('google');
+          }}
+        >
+          <button type='submit'>Sign in with Google</button>
+        </form>
+      )}
       <div className='mb-8'>
         <h1 className='text-3xl font-semibold text-gray-900'>Our Postcards</h1>
         <p className='text-gray-500 mt-2'>
@@ -38,9 +62,8 @@ export default async function HomePage() {
         </div>
       )}
     </div>
-  )
+  );
 }
-// import { auth, signIn, signOut } from '@/auth';
 // export default async function Home() {
 //   const session = await auth();
 

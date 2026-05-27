@@ -50,6 +50,9 @@ export async function POST(req: NextRequest) {
       );
       return NextResponse.json({ received: true }, { status: 200 });
     }
+
+    console.log('No existing order found, proceeding to create...');
+
     const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
       expand: ['line_items.data.price.product'],
     });
