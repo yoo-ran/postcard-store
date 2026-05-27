@@ -27,6 +27,7 @@ export default function Navbar() {
           <Link href='/cart' className='text-sm text-gray-600 hover:text-black'>
             Cart ({mounted ? totalItems() : 0})
           </Link>
+          <Link href='/orders'>Orders</Link>
 
           {status === 'authenticated' ? (
             <div className='flex items-center gap-4'>
