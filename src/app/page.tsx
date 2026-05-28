@@ -14,6 +14,10 @@ async function getProducts(): Promise<Product[]> {
 
     return res.json();
   } catch (error) {
+    throw new Error(
+      `Failed to fetch products: ${error instanceof Error ? error.message : String(error)}`,
+    );
+
     return [];
   }
 }
