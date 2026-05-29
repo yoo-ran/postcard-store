@@ -5,10 +5,6 @@ import { useState } from 'react';
 import ProductCard from '@/components/shop/ProductCard';
 import type { Product } from '@prisma/client';
 
-interface Recommendation {
-  productId: string;
-  reason: string;
-}
 
 export default function Recommender() {
   const [query, setQuery] = useState('');

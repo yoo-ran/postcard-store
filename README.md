@@ -15,6 +15,7 @@ A production-grade full-stack ecommerce store for buying and sending postcards �
 - [Authentication](#-authentication)
 - [Payments](#-payments)
 - [AWS Architecture](#-aws-architecture)
+- [AI Recommender](#-ai-recommender)
 - [Security Decisions](#-security-decisions)
 - [Project Structure](#-project-structure)
 - [Key Engineering Decisions](#-key-engineering-decisions)
@@ -311,6 +312,38 @@ Managed PostgreSQL instance storing all product, cart, and order data. Connected
 
 ---
 
+## 🤖 AI Recommender
+
+Users describe what they're looking for in natural language and the recommender returns matched postcards from the catalogue.
+
+### How It Works
+
+1. User submits a query (e.g. "something funny for my mum's birthday")
+2. `POST /api/recommend` injects the full product catalogue into the Claude system prompt — a lightweight Retrieval-Augmented Generation (RAG) pattern that grounds the model in real data rather than relying on training knowledge
+3. Claude returns a JSON array of `{ productId, reason }` objects
+4. The response is validated with Zod — any response that doesn't match the expected schema is discarded and returns an empty array
+5. Each `productId` is cross-checked against the database — hallucinated IDs that don't exist are filtered out before any DB query runs
+6. Matched products are returned to the UI
+
+### Failure Handling
+
+| Failure                           | Behaviour                                           |
+| --------------------------------- | --------------------------------------------------- |
+| AI returns malformed JSON         | Zod parse fails → empty array returned, never a 500 |
+| AI hallucinates a product ID      | Filtered out before DB query                        |
+| Anthropic API times out or errors | Outer catch returns empty array                     |
+| Rate limit exceeded               | 429 returned — UI shows fallback message            |
+
+### Environment Variables
+
+| Variable                   | Description                           |
+| -------------------------- | ------------------------------------- |
+| `ANTHROPIC_API_KEY`        | Anthropic API key for Claude access   |
+| `UPSTASH_REDIS_REST_URL`   | Upstash Redis URL for rate limiting   |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis token for rate limiting |
+
+---
+
 ## 🔒 Security Decisions
 
 **Why webhook signature verification?**
@@ -327,6 +360,12 @@ bcrypt is a slow, adaptive hashing algorithm designed for passwords. Unlike MD5 
 
 **Why Zod on AI output?**
 The Anthropic API response is treated as untrusted data. Every response is validated against a Zod schema before any product ID touches the database — hallucinated or malformed IDs are caught and rejected gracefully.
+
+**Why rate limit the AI endpoint?**
+Anthropic API calls cost money per token — without rate limiting a single user could run up significant costs in minutes. `/api/recommend` is limited to 10 requests per IP per hour via Upstash Redis. Exceeding the limit returns a 429 with `x-ratelimit-remaining: 0`.
+
+**Why set security headers (CSP)?**
+Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, and Referrer-Policy headers are set on every response via Next.js config. Prevents clickjacking, MIME sniffing, and XSS injection from third-party scripts.
 
 ---
 
