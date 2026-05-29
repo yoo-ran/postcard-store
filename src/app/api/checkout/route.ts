@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { checkoutCartSchema } from '@/schemas/checkout.schema';
+import { checkoutLimiter } from '@/lib/ratelimit';
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
+
+  const ip =
+    req.headers.get('x-forwarded-for') ??
+    req.headers.get('x-real-ip') ??
+    '127.0.0.1';
+    
+  const { success } = await checkoutLimiter.limit(ip);
+
+  if (!success) {
+    return new Response('Too many requests. Try again later.', { status: 429 });
+  }
 
   const parsed = checkoutCartSchema.safeParse(body);
   if (!parsed.success) {
