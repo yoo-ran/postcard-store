@@ -1,6 +1,7 @@
 import ProductCard from '@/components/shop/ProductCard';
 import type { Product } from '@prisma/client';
 import { auth, signIn, signOut } from '@/auth';
+import Recommender from '@/components/ai/Recommender';
 
 async function getProducts(): Promise<Product[]> {
   try {
@@ -65,6 +66,7 @@ export default async function HomePage() {
           ))}
         </div>
       )}
+      <Recommender />
     </div>
   );
 }

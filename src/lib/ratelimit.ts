@@ -17,3 +17,9 @@ export const checkoutLimiter = new Ratelimit({
   limiter: Ratelimit.slidingWindow(10, '1 h'),
   prefix: 'rl:checkout:test2',
 });
+
+export const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, '1 h'),
+  prefix: 'ratelimit:recommend',
+});
