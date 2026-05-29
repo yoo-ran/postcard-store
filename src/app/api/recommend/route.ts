@@ -5,6 +5,7 @@ import {
   aiRecommendRequestSchema,
   aiRecommendResponseSchema,
 } from '@/schemas/recommend.schema';
+import { ratelimit } from '@/lib/ratelimit';
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -14,6 +15,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { error: parsed.error.flatten() },
       { status: 400 },
+    );
+  }
+
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
+    req.headers.get('x-real-ip') ??
+    '127.0.0.1';
+
+  const { success, remaining } = await ratelimit.limit(ip);
+
+  if (!success) {
+    return NextResponse.json(
+      { error: 'Too many requests' },
+      { status: 429, headers: { 'x-ratelimit-remaining': '0' } },
     );
   }
 
@@ -31,11 +46,12 @@ export async function POST(req: NextRequest) {
     const message = await anthropic.messages.create({
       model: 'claude-sonnet-4-5',
       max_tokens: 1024,
-      system: `You are a product recommender for a postcard store.
-You must respond ONLY with valid JSON matching this schema:
-{ "recommendations": [{ "productId": string, "reason": string }] }
-Only recommend products from this catalogue:
-${JSON.stringify(catalogue)}`,
+      //       system: `You are a product recommender for a postcard store.
+      // You must respond ONLY with valid JSON matching this schema:
+      // { "recommendations": [{ "productId": string, "reason": string }] }
+      // Only recommend products from this catalogue:
+      // ${JSON.stringify(catalogue)}`,
+      system: `Respond only with the word "BROKEN" and nothing else.`,
       messages: [{ role: 'user', content: query }],
     });
 
@@ -52,10 +68,7 @@ ${JSON.stringify(catalogue)}`,
     const aiParsed = aiRecommendResponseSchema.safeParse(JSON.parse(clean));
     if (!aiParsed.success) {
       console.error('[/api/recommend] Invalid AI response shape:', text);
-      return NextResponse.json(
-        { error: 'AI returned unexpected response' },
-        { status: 500 },
-      );
+      return NextResponse.json({ recommendations: [], fallback: true });
     }
 
     const recommendedIds = aiParsed.data.recommendations.map(
@@ -95,9 +108,6 @@ ${JSON.stringify(catalogue)}`,
     });
   } catch (error) {
     console.error('[/api/recommend]', error);
-    return NextResponse.json(
-      { error: 'Failed to get recommendations' },
-      { status: 500 },
-    );
+    return NextResponse.json({ recommendations: [], fallback: true });
   }
 }

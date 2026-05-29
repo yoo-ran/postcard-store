@@ -2,7 +2,7 @@ import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const CLOUDFRONT_URL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL 
+const CLOUDFRONT_URL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL;
 
 const products: Prisma.ProductCreateInput[] = [
   {
@@ -19,7 +19,7 @@ const products: Prisma.ProductCreateInput[] = [
     price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-02.jpg`,
-    category: 'paris',
+    category: 'travel',
   },
   {
     name: 'Postcard 3',
@@ -27,7 +27,7 @@ const products: Prisma.ProductCreateInput[] = [
     price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-03.jpg`,
-    category: 'postcards',
+    category: 'birthday',
   },
   {
     name: 'Postcard 4',
@@ -35,7 +35,7 @@ const products: Prisma.ProductCreateInput[] = [
     price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-04.jpg`,
-    category: 'postcards',
+    category: 'romantic',
   },
   {
     name: 'Postcard 5',
@@ -43,7 +43,7 @@ const products: Prisma.ProductCreateInput[] = [
     price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-05.jpg`,
-    category: 'postcards',
+    category: 'funny',
   },
   {
     name: 'Postcard 6',
@@ -51,7 +51,7 @@ const products: Prisma.ProductCreateInput[] = [
     price: 499,
     stock: 100,
     imageUrl: `${CLOUDFRONT_URL}/postcard-06.jpg`,
-    category: 'postcards',
+    category: 'thank-you',
   },
 ];
 
