@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     req.headers.get('x-real-ip') ??
     '127.0.0.1';
 
-  const { success, remaining } = await ratelimit.limit(ip);
+  const { success } = await ratelimit.limit(ip);
 
   if (!success) {
     return NextResponse.json(
@@ -35,13 +35,7 @@ export async function POST(req: NextRequest) {
   const { query } = parsed.data;
 
   const products = await prisma.product.findMany();
-  const catalogue = products.map((p) => ({
-    productId: p.id,
-    name: p.name,
-    price: Number(p.price),
-    category: p.category,
-  }));
-
+  
   try {
     const message = await anthropic.messages.create({
       model: 'claude-sonnet-4-5',
