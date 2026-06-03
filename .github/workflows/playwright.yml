@@ -28,6 +28,7 @@ jobs:
       AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
       AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
       NODE_ENV: test
+      NEXT_PUBLIC_CLOUDFRONT_URL: 'https://placeholder.com'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -53,6 +54,10 @@ jobs:
           exit 1
       - name: Run Database Migrations
         run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/test_db'
+      - name: Seed Database
+        run: npm run seed
         env:
           DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/test_db'
       - name: Install Playwright Browsers

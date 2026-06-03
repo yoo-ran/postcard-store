@@ -13,12 +13,10 @@ test.describe('Cart flow', () => {
     // 1. Visit homepage
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    // 2. Confirm at least one product card is visible
-    const firstProduct = page
-      .locator('h3.font-medium, [class*="product"]')
-      .first();
+    // 2. Wait for product cards to render
+    await page.waitForSelector('h3.font-medium', { timeout: 15000 });
+    const firstProduct = page.locator('h3.font-medium').first();
     await expect(firstProduct).toBeVisible();
-    await page.waitForSelector('h3.font-medium', { timeout: 10000 });
 
     // 3. Get the product name so we can assert it in the cart later
     const productName = await firstProduct.textContent();
