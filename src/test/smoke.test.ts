@@ -1,5 +1,0 @@
-describe('setup', () => {
-  it('works', () => {
-    expect(true).toBe(true);
-  });
-});
