@@ -15,8 +15,9 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: test_db
+          POSTGRES_INITDB_ARGS: '--encoding=UTF8'
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -36,13 +37,20 @@ jobs:
         run: npm ci
       - name: Generate Prisma Client
         run: npx prisma generate
+      - name: Install PostgreSQL client
+        run: sudo apt-get install -y postgresql-client
       - name: Wait for PostgreSQL to be ready
         run: |
-          until PGPASSWORD=postgres psql -h localhost -p 5432 -U postgres -d test_db -c "SELECT 1" > /dev/null 2>&1; do
-            echo 'Waiting for PostgreSQL...'
-            sleep 1
+          for i in {1..30}; do
+            if PGPASSWORD=postgres psql -h localhost -p 5432 -U postgres -d test_db -c "SELECT 1" > /dev/null 2>&1; then
+              echo "PostgreSQL is ready!"
+              exit 0
+            fi
+            echo "Attempt $i: PostgreSQL not ready yet..."
+            sleep 2
           done
-          echo 'PostgreSQL is ready!'
+          echo "PostgreSQL failed to start!"
+          exit 1
       - name: Run Database Migrations
         run: npx prisma migrate deploy
         env:
@@ -62,3 +70,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-traces
+          path: playwright-report/
