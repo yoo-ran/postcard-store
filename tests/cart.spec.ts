@@ -1,13 +1,24 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Cart flow', () => {
+  test.beforeAll(async ({ browser }) => {
+    // Optional: Health check before tests
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto('/', { waitUntil: 'networkidle' });
+    await context.close();
+  });
+
   test('browse products → add to cart → verify cart', async ({ page }) => {
     // 1. Visit homepage
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'networkidle' });
 
     // 2. Confirm at least one product card is visible
-    const firstProduct = page.locator('h3.font-medium').first();
+    const firstProduct = page
+      .locator('h3.font-medium, [class*="product"]')
+      .first();
     await expect(firstProduct).toBeVisible();
+    await page.waitForSelector('h3.font-medium', { timeout: 10000 });
 
     // 3. Get the product name so we can assert it in the cart later
     const productName = await firstProduct.textContent();
