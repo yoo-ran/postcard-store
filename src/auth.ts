@@ -14,10 +14,29 @@ const prisma = new PrismaClient();
 const client = new SecretsManagerClient({ region: 'ca-central-1' });
 
 const { AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET } = await (async () => {
-  const response = await client.send(
-    new GetSecretValueCommand({ SecretId: 'postcard-store-google-oauth' }),
-  );
-  return JSON.parse(response.SecretString ?? '{}');
+  // In test/CI environment, use environment variables
+  if (process.env.NODE_ENV === 'test' || process.env.CI) {
+    return {
+      AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID || '',
+      AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET || '',
+    };
+  }
+
+  try {
+    const response = await client.send(
+      new GetSecretValueCommand({ SecretId: 'postcard-store-google-oauth' }),
+    );
+    return JSON.parse(response.SecretString ?? '{}');
+  } catch (error) {
+    console.warn(
+      'Failed to load secrets from AWS, using environment variables',
+      error,
+    );
+    return {
+      AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID || '',
+      AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET || '',
+    };
+  }
 })();
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
