@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
+import { formatPrice } from '@/lib/format-price';
 
 export default async function OrdersPage() {
   const session = await auth();
@@ -98,7 +99,7 @@ export default async function OrdersPage() {
                       </div>
                     </div>
                     <p className='text-sm font-medium'>
-                      ${Number(item.unitPrice).toFixed(2)}
+                      {formatPrice(Number(item.unitPrice))}
                     </p>
                   </div>
                 ))}
@@ -107,7 +108,7 @@ export default async function OrdersPage() {
               {/* Order total */}
               <div className='flex justify-between font-bold border-t pt-4'>
                 <span>Total</span>
-                <span>${Number(order.total).toFixed(2)}</span>
+                <span>{formatPrice(Number(order.total))}</span>
               </div>
             </div>
           </Link>

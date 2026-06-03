@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart.store';
 import { useState, useEffect } from 'react';
+import { formatPrice } from '@/lib/format-price'
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, totalPrice } = useCartStore();
@@ -58,7 +59,7 @@ export default function CartPage() {
                 {item.name}
               </h3>
               <p className='text-sm text-gray-500 mt-0.5'>
-                ${(item.price / 100).toFixed(2)} each
+                {formatPrice(item.price)}
               </p>
 
               <div className='flex items-center gap-4 mt-3'>
@@ -93,7 +94,7 @@ export default function CartPage() {
 
             <div className='text-right shrink-0'>
               <span className='font-semibold text-gray-900'>
-                ${((item.price * item.quantity) / 100).toFixed(2)}
+                {formatPrice(item.price * item.quantity)}
               </span>
             </div>
           </div>
@@ -104,7 +105,7 @@ export default function CartPage() {
         <div className='flex items-center justify-between mb-6'>
           <span className='text-lg font-medium text-gray-900'>Order total</span>
           <span className='text-2xl font-semibold text-gray-900'>
-            ${(totalPrice() / 100).toFixed(2)}
+            {formatPrice(totalPrice())}
           </span>
         </div>
 

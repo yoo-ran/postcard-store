@@ -3,16 +3,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@prisma/client';
 import { useCartStore } from '@/store/cart.store';
+import { formatPrice } from '@/lib/format-price';
 
 type ProductCardProps = {
   product: Product;
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const priceInDollars = Number(product.price) / 100;
-  const priceFormatted = priceInDollars.toFixed(2);
+  const priceInCents = Number(product.price);
   const addItem = useCartStore((state) => state.addItem);
-  
+
   return (
     <div className='group border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow'>
       <Link href={`/products/${product.id}`}>
@@ -35,13 +35,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.description}
         </p>
         <div className='flex items-center justify-between mt-4'>
-          <span className='font-semibold text-gray-900'>${priceFormatted}</span>
+          <span className='font-semibold text-gray-900'>{formatPrice(priceInCents)}</span>
           <button
             onClick={() =>
               addItem({
                 id: product.id,
                 name: product.name,
-                price: priceInDollars,
+                price: priceInCents,
                 imageUrl: product.imageUrl,
               })
             }

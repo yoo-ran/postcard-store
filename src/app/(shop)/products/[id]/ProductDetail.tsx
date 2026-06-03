@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart.store';
 import type { Product } from '@prisma/client';
+import { formatPrice } from '@/lib/format-price';
 
 interface Props {
   product: Product;
@@ -112,9 +113,9 @@ export default function ProductDetail({ product }: Props) {
             <div>
               <div className='flex items-baseline gap-3 mb-6'>
                 <span className='text-4xl font-bold text-[#1A1916] tracking-tight'>
-                  ${(Number(product.price) / 100).toFixed(2)}
+                  {formatPrice(Number(product.price))}
                 </span>
-                <span className='text-sm text-[#A09A93]'>USD</span>
+                <span className='text-sm text-[#A09A93]'>CAD</span>
               </div>
 
               <button

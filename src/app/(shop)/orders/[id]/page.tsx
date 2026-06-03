@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { auth } from '@/auth';
 import ClearCart from './ClearCart';
+import { formatPrice } from '@/lib/format-price';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -47,7 +48,7 @@ export default async function OrderConfirmationPage({ params }: Props) {
               <p className='font-medium'>{item.product.name}</p>
               <p className='text-sm text-gray-500'>Qty: {item.quantity}</p>
             </div>
-            <p className='font-medium'>${Number(item.unitPrice).toFixed(2)}</p>
+            <p className='font-medium'>{formatPrice(Number(item.unitPrice))}</p>
           </div>
         ))}
       </div>
@@ -55,7 +56,7 @@ export default async function OrderConfirmationPage({ params }: Props) {
       {/* Total */}
       <div className='flex justify-between text-lg font-bold border-t pt-4'>
         <span>Total</span>
-        <span>${Number(order.total).toFixed(2)}</span>
+        <span>{formatPrice(Number(order.total))}</span>
       </div>
 
       {/* Clears cart on mount */}

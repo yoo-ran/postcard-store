@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useCartStore } from '@/store/cart.store';
+import { formatPrice } from '@/lib/format-price';
 
 export default function CheckoutPage() {
   const items = useCartStore((state) => state.items);
@@ -21,8 +22,7 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           cartItems: items.map((item) => ({
             productId: item.id,
-            name: item.name,
-            price: item.price, // store is in cents, Stripe schema expects dollars
+            name: item.name,// store is in cents, Stripe schema expects dollars
             quantity: item.quantity,
           })),
         }),
@@ -61,8 +61,8 @@ export default function CheckoutPage() {
         ) : (
           <>
             <p className='text-[#8B8680] text-sm mb-6'>
-              {items.length} item{items.length > 1 ? 's' : ''} &mdash; $
-              {totalPrice().toFixed(2)}
+              {items.length} item{items.length > 1 ? 's' : ''} &mdash;{' '}
+              {formatPrice(totalPrice())}
             </p>
 
             {error && <p className='text-red-500 text-sm mb-4'>{error}</p>}
