@@ -67,9 +67,12 @@ export default async function HomePage() {
         </div>
       )}
       <Recommender />
+      
     </div>
   );
 }
+// testing CI pipeline
+
 // export default async function Home() {
 //   const session = await auth();
 
