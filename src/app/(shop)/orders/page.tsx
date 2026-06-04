@@ -54,7 +54,7 @@ export default async function OrdersPage() {
 
       {/* Orders list */}
       <div className='space-y-6'>
-        {orders.map((order) => (
+        {orders.map((order: (typeof orders)[number]) => (
           <Link key={order.id} href={`/orders/${order.id}`}>
             <div className='border rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer'>
               {/* Order header */}
@@ -77,32 +77,34 @@ export default async function OrdersPage() {
 
               {/* Order items */}
               <div className='divide-y mb-4'>
-                {order.orderItems.map((item) => (
-                  <div key={item.id} className='flex justify-between py-2'>
-                    <div className='flex items-center gap-3'>
-                      {item.product.imageUrl && (
-                        <Image
-                          src={item.product.imageUrl}
-                          alt={item.product.name}
-                          className='w-10 h-10 object-cover rounded'
-                          width={40}
-                          height={40}
-                        />
-                      )}
-                      <div>
-                        <p className='font-medium text-sm'>
-                          {item.product.name}
-                        </p>
-                        <p className='text-xs text-gray-500'>
-                          Qty: {item.quantity}
-                        </p>
+                {order.orderItems.map(
+                  (item: (typeof order.orderItems)[number]) => (
+                    <div key={item.id} className='flex justify-between py-2'>
+                      <div className='flex items-center gap-3'>
+                        {item.product.imageUrl && (
+                          <Image
+                            src={item.product.imageUrl}
+                            alt={item.product.name}
+                            className='w-10 h-10 object-cover rounded'
+                            width={40}
+                            height={40}
+                          />
+                        )}
+                        <div>
+                          <p className='font-medium text-sm'>
+                            {item.product.name}
+                          </p>
+                          <p className='text-xs text-gray-500'>
+                            Qty: {item.quantity}
+                          </p>
+                        </div>
                       </div>
+                      <p className='text-sm font-medium'>
+                        {formatPrice(Number(item.unitPrice))}
+                      </p>
                     </div>
-                    <p className='text-sm font-medium'>
-                      {formatPrice(Number(item.unitPrice))}
-                    </p>
-                  </div>
-                ))}
+                  ),
+                )}
               </div>
 
               {/* Order total */}

@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
     });
 
     await Promise.all(
-      order.orderItems.map((item) =>
+      order.orderItems.map((item: (typeof order.orderItems)[number]) =>
         prisma.product.update({
           where: { id: item.productId },
           data: {
@@ -108,11 +108,13 @@ export async function POST(req: NextRequest) {
     await sendOrderConfirmationEmail({
       orderId: order.id,
       customerEmail,
-      items: order.orderItems.map((item) => ({
-        name: item.product.name,
-        quantity: item.quantity,
-        price: Number(item.unitPrice),
-      })),
+      items: order.orderItems.map(
+        (item: (typeof order.orderItems)[number]) => ({
+          name: item.product.name,
+          quantity: item.quantity,
+          price: Number(item.unitPrice),
+        }),
+      ),
       total: Number(order.total),
     });
 

@@ -5,7 +5,6 @@ import { useState } from 'react';
 import ProductCard from '@/components/shop/ProductCard';
 import type { Product } from '@prisma/client';
 
-
 export default function Recommender() {
   const [query, setQuery] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
@@ -95,7 +94,7 @@ export default function Recommender() {
 
       {products.length > 0 && (
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4'>
-          {products.map((p) => (
+          {products.map((p: (typeof products)[number]) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>

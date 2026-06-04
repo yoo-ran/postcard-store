@@ -15,10 +15,9 @@ async function getProducts(): Promise<Product[]> {
 
     return res.json();
   } catch (error) {
-    throw new Error(
+    console.error(
       `Failed to fetch products: ${error instanceof Error ? error.message : String(error)}`,
     );
-
     return [];
   }
 }
@@ -61,7 +60,7 @@ export default async function HomePage() {
         <p className='text-gray-500'>No products found.</p>
       ) : (
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {products.map((product) => (
+          {products.map((product: (typeof products)[number]) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -72,7 +71,7 @@ export default async function HomePage() {
 }
 // testing CI pipeline
 // testing CI pipeline again
-// testing CI pipeline with another commit 
+// testing CI pipeline with another commit
 // testing CI pipeline with another commit in test branch
 
 // export default async function Home() {
