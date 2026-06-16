@@ -6,7 +6,7 @@ import Recommender from '@/components/ai/Recommender';
 async function getProducts(): Promise<Product[]> {
   try {
     const res = await fetch('http://localhost:3000/api/products', {
-      cache: 'no-store',
+      next: { revalidate: 60 }, // Cache for 60 seconds, then revalidate
     });
 
     if (!res.ok) {
@@ -21,6 +21,8 @@ async function getProducts(): Promise<Product[]> {
     return [];
   }
 }
+
+export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function HomePage() {
   const products = await getProducts();
@@ -69,40 +71,3 @@ export default async function HomePage() {
     </div>
   );
 }
-// testing CI pipeline
-// testing CI pipeline again
-// testing CI pipeline with another commit
-// testing CI pipeline with another commit in test branch
-// testing CI pipeline with another commit in test branch again
-// testing CI pipeline with another commit in test branch again
-
-// export default async function Home() {
-//   const session = await auth();
-
-//   return (
-//     <main>
-//       {session ? (
-//         <>
-//           <p>Signed in as {session.user?.email}</p>
-//           <form
-//             action={async () => {
-//               'use server';
-//               await signOut();
-//             }}
-//           >
-//             <button type='submit'>Sign out</button>
-//           </form>
-//         </>
-//       ) : (
-//         <form
-//           action={async () => {
-//             'use server';
-//             await signIn('google');
-//           }}
-//         >
-//           <button type='submit'>Sign in with Google</button>
-//         </form>
-//       )}
-//     </main>
-//   );
-// }
