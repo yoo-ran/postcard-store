@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DATABASE_URL: postgresql://user:password@localhost:5432/test
+      DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/test_db'
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
       STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
       AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
