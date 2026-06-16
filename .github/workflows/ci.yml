@@ -50,6 +50,9 @@ jobs:
       - name: Unit tests
         run: npm run test
 
+      - name: Clean build cache
+        run: rm -rf .next
+
       - name: Build application
         run: npm run build
 
