@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('returns product results for a valid query', async ({ page }) => {
   // 1. Visit homepage where Recommender is rendered
-  await page.goto('/');
+  await page.goto('/', { waitUntil: 'networkidle' });
 
   // 2. Confirm the recommender section is visible
   await expect(page.getByText('Find your perfect postcard')).toBeVisible();
