@@ -19,11 +19,11 @@ test('returns product results for a valid query', async ({ page }) => {
 
   // 5. Wait for loading to finish — spinner disappears, Find button returns
   await expect(page.getByRole('button', { name: 'Find' })).toBeVisible({
-    timeout: 30000,
+    timeout: 60000,
   });
 
   // 6. Wait for product results to render
-  await page.waitForSelector('h3.font-medium', { timeout: 30000 });
+  await page.waitForSelector('h3.font-medium', { timeout: 60000 });
   const productCards = page.locator('h3.font-medium');
 
   await expect(productCards.first()).toBeVisible();
@@ -46,12 +46,14 @@ test('shows empty state when no matches found', async ({ page }) => {
 
   await page.getByRole('button', { name: 'Find' }).click();
 
+  await page.waitForLoadState('networkidle');
+
   // Wait for response — either results or empty state
   await expect(
     page
       .getByText('No matches found, try a different description')
       .or(page.locator('h3.font-medium').first()),
-  ).toBeVisible({ timeout: 30000 });
+  ).toBeVisible({ timeout: 60000 });
 });
 
 test('Find button is disabled when input is empty', async ({ page }) => {

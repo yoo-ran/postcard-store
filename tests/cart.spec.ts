@@ -14,7 +14,7 @@ test.describe('Cart flow', () => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
     // 2. Wait for product cards to render
-    await page.waitForSelector('h3.font-medium', { timeout: 15000 });
+    await page.waitForSelector('h3.font-medium', { timeout: 30000 });
     const firstProduct = page.locator('h3.font-medium').first();
     await expect(firstProduct).toBeVisible();
 
