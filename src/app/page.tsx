@@ -5,7 +5,8 @@ import Recommender from '@/components/ai/Recommender';
 
 async function getProducts(): Promise<Product[]> {
   try {
-    const res = await fetch('http://localhost:3000/api/products', {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/products`, {
       next: { revalidate: 60 }, // Cache for 60 seconds, then revalidate
     });
 
