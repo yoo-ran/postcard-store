@@ -24,7 +24,8 @@ jobs:
         ports:
           - 5432:5432
     env:
-      DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/test_db'
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+      DIRECT_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
       AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
       AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
       AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
