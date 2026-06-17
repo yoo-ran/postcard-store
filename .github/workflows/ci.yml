@@ -26,7 +26,8 @@ jobs:
           --health-retries 5
 
     env:
-      DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/test_db'
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+      DIRECT_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
       STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
       AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
