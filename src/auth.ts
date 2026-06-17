@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { PrismaClient, Role } from '@prisma/client';
+import { Role } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { LoginSchema } from '@/schemas/auth.schema';
 import {
@@ -10,7 +10,8 @@ import {
   GetSecretValueCommand,
 } from '@aws-sdk/client-secrets-manager';
 
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
+
 const client = new SecretsManagerClient({ region: 'ca-central-1' });
 
 const { AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET } = await (async () => {
