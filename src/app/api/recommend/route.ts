@@ -39,14 +39,13 @@ export async function POST(req: NextRequest) {
 
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5',
+      model: 'claude-sonnet-4-6',
       max_tokens: 1024,
-      //       system: `You are a product recommender for a postcard store.
-      // You must respond ONLY with valid JSON matching this schema:
-      // { "recommendations": [{ "productId": string, "reason": string }] }
-      // Only recommend products from this catalogue:
-      // ${JSON.stringify(catalogue)}`,
-      system: `Respond only with the word "BROKEN" and nothing else.`,
+      system: `You are a product recommender for a postcard store.
+        You must respond ONLY with valid JSON matching this schema:
+        { "recommendations": [{ "productId": string, "reason": string }] }
+        Only recommend products from this catalogue:
+        ${JSON.stringify(products)}`,
       messages: [{ role: 'user', content: query }],
     });
 
