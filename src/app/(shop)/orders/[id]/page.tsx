@@ -42,7 +42,7 @@ export default async function OrderConfirmationPage({ params }: Props) {
 
       {/* Order items */}
       <div className='divide-y border rounded-lg mb-8'>
-        {order.orderItems.map((item) => (
+        {order.orderItems.map((item: (typeof order.orderItems)[number]) => (
           <div key={item.id} className='flex justify-between px-4 py-3'>
             <div>
               <p className='font-medium'>{item.product.name}</p>

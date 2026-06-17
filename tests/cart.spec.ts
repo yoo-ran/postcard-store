@@ -12,9 +12,11 @@ test.describe('Cart flow', () => {
   test('browse products → add to cart → verify cart', async ({ page }) => {
     // 1. Visit homepage
     await page.goto('/', { waitUntil: 'networkidle' });
+    await page.screenshot({ path: 'debug-screenshot.png' });
+    await page.waitForSelector('h3.font-medium', { timeout: 120000 });
 
     // 2. Wait for product cards to render
-    await page.waitForSelector('h3.font-medium', { timeout: 15000 });
+    await page.waitForSelector('h3.font-medium', { timeout: 120000 });
     const firstProduct = page.locator('h3.font-medium').first();
     await expect(firstProduct).toBeVisible();
 

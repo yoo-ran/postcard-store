@@ -4,8 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart.store';
-import type { Product } from '@prisma/client';
 import { formatPrice } from '@/lib/format-price';
+import type { Product } from '@prisma/client';
 
 interface Props {
   product: Product;

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import type { Prisma } from '@prisma/client';
 import { anthropic } from '@/lib/anthropic';
 import {
   aiRecommendRequestSchema,
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
   const { query } = parsed.data;
 
   const products = await prisma.product.findMany();
-  
+
   try {
     const message = await anthropic.messages.create({
       model: 'claude-sonnet-4-5',
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
     }
 
     const recommendedIds = aiParsed.data.recommendations.map(
-      (r) => r.productId,
+      (r: { productId: string; reason: string }) => r.productId,
     );
     const validProductIds = new Set(products.map((p) => p.id));
 
@@ -80,8 +81,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const validRecommendations = aiParsed.data.recommendations.filter((r) =>
-      validProductIds.has(r.productId),
+    const validRecommendations = aiParsed.data.recommendations.filter(
+      (r: { productId: string; reason: string }) =>
+        validProductIds.has(r.productId),
     );
 
     if (validRecommendations.length === 0) {
@@ -89,14 +91,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ recommendations: fallback, fallback: true });
     }
 
-    const matchedProducts = products.filter((p) =>
+    const matchedProducts = products.filter((p: (typeof products)[number]) =>
       validRecommendations.some((r) => r.productId === p.id),
     );
 
     return NextResponse.json({
       recommendations: matchedProducts.map((p) => ({
         ...p,
-        reason: validRecommendations.find((r) => r.productId === p.id)?.reason,
+        reason: validRecommendations.find(
+          (r: { productId: string; reason: string }) => r.productId === p.id,
+        )?.reason,
       })),
       fallback: false,
     });

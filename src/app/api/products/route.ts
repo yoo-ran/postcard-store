@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     });
 
     const validated = productListResponseSchema.safeParse(
-      products.map((p) => ({
+      products.map((p: (typeof products)[number]) => ({
         ...p,
         price: Number(p.price),
         createdAt: p.createdAt.toISOString(),

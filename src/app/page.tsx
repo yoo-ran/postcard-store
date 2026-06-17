@@ -6,7 +6,7 @@ import Recommender from '@/components/ai/Recommender';
 async function getProducts(): Promise<Product[]> {
   try {
     const res = await fetch('http://localhost:3000/api/products', {
-      cache: 'no-store',
+      next: { revalidate: 60 }, // Cache for 60 seconds, then revalidate
     });
 
     if (!res.ok) {
@@ -15,13 +15,14 @@ async function getProducts(): Promise<Product[]> {
 
     return res.json();
   } catch (error) {
-    throw new Error(
+    console.error(
       `Failed to fetch products: ${error instanceof Error ? error.message : String(error)}`,
     );
-
     return [];
   }
 }
+
+export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function HomePage() {
   const products = await getProducts();
@@ -61,7 +62,7 @@ export default async function HomePage() {
         <p className='text-gray-500'>No products found.</p>
       ) : (
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {products.map((product) => (
+          {products.map((product: (typeof products)[number]) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -70,36 +71,3 @@ export default async function HomePage() {
     </div>
   );
 }
-// testing CI pipeline
-// testing CI pipeline again
-
-// export default async function Home() {
-//   const session = await auth();
-
-//   return (
-//     <main>
-//       {session ? (
-//         <>
-//           <p>Signed in as {session.user?.email}</p>
-//           <form
-//             action={async () => {
-//               'use server';
-//               await signOut();
-//             }}
-//           >
-//             <button type='submit'>Sign out</button>
-//           </form>
-//         </>
-//       ) : (
-//         <form
-//           action={async () => {
-//             'use server';
-//             await signIn('google');
-//           }}
-//         >
-//           <button type='submit'>Sign in with Google</button>
-//         </form>
-//       )}
-//     </main>
-//   );
-// }
