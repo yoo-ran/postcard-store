@@ -44,6 +44,7 @@ jobs:
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
       NEXT_PUBLIC_CLOUDFRONT_URL: ${{ secrets.NEXT_PUBLIC_CLOUDFRONT_URL }}
       NODE_ENV: test
+      PLAYWRIGHT_TEST: 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

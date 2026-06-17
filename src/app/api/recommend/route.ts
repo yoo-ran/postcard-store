@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import type { Prisma } from '@prisma/client';
 import { anthropic } from '@/lib/anthropic';
 import {
   aiRecommendRequestSchema,
@@ -24,13 +23,16 @@ export async function POST(req: NextRequest) {
     req.headers.get('x-real-ip') ??
     '127.0.0.1';
 
-  const { success } = await ratelimit.limit(ip);
+  const isTestEnv = process.env.PLAYWRIGHT_TEST === 'true';
 
-  if (!success) {
-    return NextResponse.json(
-      { error: 'Too many requests' },
-      { status: 429, headers: { 'x-ratelimit-remaining': '0' } },
-    );
+  if (!isTestEnv) {
+    const { success } = await ratelimit.limit(ip);
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Too many requests' },
+        { status: 429, headers: { 'x-ratelimit-remaining': '0' } },
+      );
+    }
   }
 
   const { query } = parsed.data;

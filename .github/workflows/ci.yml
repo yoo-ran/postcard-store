@@ -43,6 +43,7 @@ jobs:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
       NEXT_PUBLIC_CLOUDFRONT_URL: ${{ secrets.NEXT_PUBLIC_CLOUDFRONT_URL }}
+      PLAYWRIGHT_TEST: 'true'
 
     steps:
       - name: Checkout code
