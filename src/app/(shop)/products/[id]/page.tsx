@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Product } from '@prisma/client';
+import prisma from '@/lib/prisma';
 import ProductDetail from './ProductDetail';
 
 interface Props {
@@ -8,15 +9,9 @@ interface Props {
 
 async function getProduct(id: string): Promise<Product | null> {
   try {
-    const res = await fetch(`http://localhost:3000/api/products/${id}`, {
-      cache: 'no-store',
+    return await prisma.product.findUnique({
+      where: { id },
     });
-
-    if (res.status === 404) return null;
-
-    if (!res.ok) throw new Error(`Failed to fetch product: ${res.status}`);
-
-    return res.json();
   } catch (error) {
     console.error('[ProductPage] getProduct:', error);
     return null;

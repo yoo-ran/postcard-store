@@ -2,19 +2,13 @@ import ProductCard from '@/components/shop/ProductCard';
 import type { Product } from '@prisma/client';
 import { auth, signIn, signOut } from '@/auth';
 import Recommender from '@/components/ai/Recommender';
+import prisma from '@/lib/prisma';
 
 async function getProducts(): Promise<Product[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/products`, {
-      next: { revalidate: 60 }, // Cache for 60 seconds, then revalidate
+    return await prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
     });
-
-    if (!res.ok) {
-      throw new Error(`Failed to fetch products: ${res.status}`);
-    }
-
-    return res.json();
   } catch (error) {
     console.error(
       `Failed to fetch products: ${error instanceof Error ? error.message : String(error)}`,
@@ -23,7 +17,7 @@ async function getProducts(): Promise<Product[]> {
   }
 }
 
-export const revalidate = 60; // Revalidate every 60 seconds
+export const revalidate = 60;
 
 export default async function HomePage() {
   const products = await getProducts();
