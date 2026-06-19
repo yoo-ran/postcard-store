@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useCartStore } from '@/store/cart.store';
 import { formatPrice } from '@/lib/format-price';
+export const dynamic = 'force-dynamic';
 
 export default function CheckoutPage() {
   const items = useCartStore((state) => state.items);
@@ -22,7 +23,7 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           cartItems: items.map((item) => ({
             productId: item.id,
-            name: item.name,// store is in cents, Stripe schema expects dollars
+            name: item.name, // store is in cents, Stripe schema expects dollars
             quantity: item.quantity,
           })),
         }),

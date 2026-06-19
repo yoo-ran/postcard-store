@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCartStore } from '@/store/cart.store';
 import { useState, useEffect } from 'react';
 import { formatPrice } from '@/lib/format-price';
+export const dynamic = 'force-dynamic';
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, totalPrice } = useCartStore();

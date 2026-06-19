@@ -5,6 +5,8 @@ import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 import { formatPrice } from '@/lib/format-price';
 
+export const dynamic = 'force-dynamic';
+
 export default async function OrdersPage() {
   const session = await auth();
 

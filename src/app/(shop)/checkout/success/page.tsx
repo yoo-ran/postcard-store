@@ -21,6 +21,7 @@ async function findOrder(sessionId: string, retries = 8, delay = 1500) {
   }
   return null;
 }
+export const dynamic = 'force-dynamic';
 
 export default async function CheckoutSuccessPage({ searchParams }: Props) {
   const { session_id: sessionId } = await searchParams;

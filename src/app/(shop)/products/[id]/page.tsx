@@ -6,6 +6,7 @@ import ProductDetail from './ProductDetail';
 interface Props {
   params: Promise<{ id: string }>;
 }
+export const dynamic = 'force-dynamic';
 
 async function getProduct(id: string): Promise<Product | null> {
   try {
