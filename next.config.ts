@@ -1,3 +1,5 @@
+console.log('DATABASE_URL prefix:', process.env.DATABASE_URL?.slice(0, 20));
+
 import type { NextConfig } from 'next';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 
