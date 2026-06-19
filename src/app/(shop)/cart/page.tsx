@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart.store';
 import { useState, useEffect } from 'react';
-import { formatPrice } from '@/lib/format-price'
+import { formatPrice } from '@/lib/format-price';
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, totalPrice } = useCartStore();
@@ -48,6 +48,7 @@ export default function CartPage() {
                   src={item.imageUrl}
                   alt={item.name}
                   fill
+                  priority
                   className='object-cover w-full h-full'
                   sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                 />

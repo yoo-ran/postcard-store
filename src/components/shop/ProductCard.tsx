@@ -21,6 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             src={product.imageUrl ?? '/placeholder.png'}
             alt={product.name}
             fill
+            priority
             className='object-cover group-hover:scale-105 transition-transform duration-300'
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
           />
@@ -35,7 +36,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.description}
         </p>
         <div className='flex items-center justify-between mt-4'>
-          <span className='font-semibold text-gray-900'>{formatPrice(priceInCents)}</span>
+          <span className='font-semibold text-gray-900'>
+            {formatPrice(priceInCents)}
+          </span>
           <button
             onClick={() =>
               addItem({
