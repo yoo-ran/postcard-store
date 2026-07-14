@@ -4,10 +4,12 @@ import { useCartStore } from '@/store/cart.store';
 import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 
+
 export default function Navbar() {
   const { totalItems } = useCartStore();
   const { data: session, status } = useSession();
   const [mounted, setMounted] = useState(false);
+  
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -48,6 +50,28 @@ export default function Navbar() {
             >
               Sign in
             </Link>
+          )}
+          {session ? (
+            <>
+              <p>Signed in as {session.user?.email}</p>
+              <form
+                action={async () => {
+                  'use server';
+                  await signOut();
+                }}
+              >
+                <button type='submit'>Sign out</button>
+              </form>
+            </>
+          ) : (
+            <form
+              action={async () => {
+                'use server';
+                await signIn('google');
+              }}
+            >
+              <button type='submit'>Sign in with Google</button>
+            </form>
           )}
         </div>
       </div>

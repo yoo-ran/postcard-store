@@ -1,7 +1,7 @@
 import ProductCard from '@/components/shop/ProductCard';
 import type { Product } from '@prisma/client';
 import { auth, signIn, signOut } from '@/auth';
-import Recommender from '@/components/ai/Recommender';
+import RecommenderWidget from '@/components/ai/RecommenderWidget';
 import prisma from '@/lib/prisma';
 
 async function getProducts(): Promise<Product[]> {
@@ -21,32 +21,10 @@ export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const products = await getProducts();
-  const session = await auth();
 
   return (
     <div>
-      {session ? (
-        <>
-          <p>Signed in as {session.user?.email}</p>
-          <form
-            action={async () => {
-              'use server';
-              await signOut();
-            }}
-          >
-            <button type='submit'>Sign out</button>
-          </form>
-        </>
-      ) : (
-        <form
-          action={async () => {
-            'use server';
-            await signIn('google');
-          }}
-        >
-          <button type='submit'>Sign in with Google</button>
-        </form>
-      )}
+      
       <div className='mb-8'>
         <h1 className='text-3xl font-semibold text-gray-900'>Our Postcards</h1>
         <p className='text-gray-500 mt-2'>
@@ -62,7 +40,8 @@ export default async function HomePage() {
           ))}
         </div>
       )}
-      <Recommender />
+
+      <RecommenderWidget />
     </div>
   );
 }
