@@ -1,6 +1,5 @@
 import ProductCard from '@/components/shop/ProductCard';
 import type { Product } from '@prisma/client';
-import { auth, signIn, signOut } from '@/auth';
 import RecommenderWidget from '@/components/ai/RecommenderWidget';
 import prisma from '@/lib/prisma';
 
@@ -24,7 +23,6 @@ export default async function HomePage() {
 
   return (
     <div>
-      
       <div className='mb-8'>
         <h1 className='text-3xl font-semibold text-gray-900'>Our Postcards</h1>
         <p className='text-gray-500 mt-2'>
