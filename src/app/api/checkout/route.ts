@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import prisma from '@/lib/prisma';
+import { auth } from '@/auth';
 import { checkoutCartSchema } from '@/schemas/checkout.schema';
 import { checkoutLimiter } from '@/lib/ratelimit';
 
 export async function POST(req: NextRequest) {
+  // Require authentication — orders must belong to a user
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const ip =
     req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
     req.headers.get('x-real-ip') ??
@@ -46,8 +53,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const session = await stripe.checkout.sessions.create({
+    const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
+      metadata: { userId: session.user.id },
+      customer_email: session.user.email ?? undefined,
       line_items: cartItems.map((item) => {
         const product = productMap.get(item.productId)!;
         return {
@@ -68,7 +77,7 @@ export async function POST(req: NextRequest) {
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/cancel`,
     });
 
-    return NextResponse.json({ url: session.url }, { status: 200 });
+    return NextResponse.json({ url: checkoutSession.url }, { status: 200 });
   } catch (error) {
     const message =
       error instanceof Error ? error.message : 'Stripe session creation failed';

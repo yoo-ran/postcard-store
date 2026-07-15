@@ -53,20 +53,17 @@ export async function POST(req: NextRequest) {
       expand: ['line_items.data.price.product'],
     });
 
-    const customerEmail = session.customer_details?.email ?? '';
-    const user = await prisma.user.findUnique({
-      where: { email: customerEmail },
-    });
-
-    if (!user) {
-      console.error('No user found for email:', customerEmail);
+    const userId = session.metadata?.userId;
+    if (!userId) {
+      console.error('No userId in session metadata:', session.id);
       return NextResponse.json({ received: true }, { status: 200 });
     }
+    const customerEmail = session.customer_details?.email ?? '';
 
     // Save order to DB
     const order = await prisma.order.create({
       data: {
-        userId: user.id,
+        userId: userId,
         stripeSessionId: session.id,
         status: 'CONFIRMED',
         total: session.amount_total ?? 0,
