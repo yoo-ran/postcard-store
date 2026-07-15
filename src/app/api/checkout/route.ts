@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
         return {
           price_data: {
             currency,
-            unit_amount: Math.round(Number(product.price) * 100),
+            unit_amount: Math.round(Number(product.price)),
             product_data: {
               name: product.name,
               metadata: {
