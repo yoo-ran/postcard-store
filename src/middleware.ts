@@ -2,6 +2,16 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  // Stripe redirects back to these — no auth gate needed (webhook creates the order)
+  if (
+    pathname.startsWith('/checkout/success') ||
+    pathname.startsWith('/checkout/cancel')
+  ) {
+    return NextResponse.next();
+  }
+
   const isSecure = req.nextUrl.protocol === 'https:';
 
   const token = await getToken({
