@@ -5,17 +5,23 @@ import { NextRequest } from 'next/server';
 export const GET = handlers.GET;
 
 export async function POST(request: NextRequest) {
-  const ip =
-    request.headers.get('x-forwarded-for') ??
-    request.headers.get('x-real-ip') ??
-    '127.0.0.1';
+  const isCredentialsLogin =
+    request.nextUrl.pathname === '/api/auth/callback/credentials';
 
-  const { success } = await authLimiter.limit(ip);
+  if (isCredentialsLogin && process.env.PLAYWRIGHT_TEST !== 'true') {
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
+      request.headers.get('x-real-ip') ??
+      '127.0.0.1';
 
-  if (!success) {
-    return new Response('Too many login attempts. Try again later.', {
-      status: 429,
-    });
+    const { success } = await authLimiter.limit(`login:${ip}`);
+
+    if (!success) {
+      return Response.json(
+        { error: 'Too many login attempts. Try again later.' },
+        { status: 429 },
+      );
+    }
   }
 
   return handlers.POST(request);

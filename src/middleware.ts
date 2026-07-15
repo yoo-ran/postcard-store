@@ -8,7 +8,6 @@ export async function middleware(req: NextRequest) {
     cookieName: 'authjs.session-token',
   });
 
-  console.log('token:', token); // ← add this
 
   if (!token) {
     const signInUrl = new URL('/login', req.url);
