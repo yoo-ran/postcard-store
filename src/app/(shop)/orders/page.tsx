@@ -83,15 +83,17 @@ export default async function OrdersPage() {
                   (item: (typeof order.orderItems)[number]) => (
                     <div key={item.id} className='flex justify-between py-2'>
                       <div className='flex items-center gap-3'>
-                        {item.product.imageUrl && (
-                          <Image
-                            src={item.product.imageUrl}
-                            alt={item.product.name}
-                            className='w-10 h-10 object-cover rounded'
-                            fill
-                            priority
-                          />
-                        )}
+                        <div className='relative w-10 h-10 md:w-16 md:h-16 shrink-0'>
+                          {item.product.imageUrl && (
+                            <Image
+                              src={item.product.imageUrl}
+                              alt={item.product.name}
+                              fill
+                              sizes='(min-width: 768px) 64px, 40px'
+                              className='object-cover rounded'
+                            />
+                          )}
+                        </div>
                         <div>
                           <p className='font-medium text-sm'>
                             {item.product.name}
