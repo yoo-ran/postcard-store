@@ -5,20 +5,20 @@ import ClearCart from './ClearCart';
 import { formatPrice } from '@/lib/format-price';
 
 interface Props {
-  params: Promise<{ id: string }>;
+  params: Promise<{ orderId: string }>;
 }
 
 export const dynamic = 'force-dynamic';
 
 export default async function OrderConfirmationPage({ params }: Props) {
-  const { id } = await params;
+  const { orderId } = await params;
 
   const session = await auth();
 
   if (!session?.user?.email) redirect('/login');
 
   const order = await prisma.order.findUnique({
-    where: { id }, // ← was params.id
+    where: { id: orderId },
     include: {
       orderItems: {
         include: { product: true },
