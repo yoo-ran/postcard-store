@@ -2,12 +2,15 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
+  const isSecure = req.nextUrl.protocol === 'https:';
+
   const token = await getToken({
     req: req as Parameters<typeof getToken>[0]['req'],
     secret: process.env.AUTH_SECRET,
-    cookieName: 'authjs.session-token',
+    cookieName: isSecure
+      ? '__Secure-authjs.session-token'
+      : 'authjs.session-token',
   });
-
 
   if (!token) {
     const signInUrl = new URL('/login', req.url);
