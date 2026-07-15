@@ -2,8 +2,6 @@ import { z } from 'zod';
 
 const lineItemSchema = z.object({
   productId: z.string().min(1, 'Product ID is required'),
-  name: z.string().min(1, 'Product name is required'),
-  price: z.number().positive('Price must be greater than 0'),
   quantity: z.number().int().positive('Quantity must be a positive integer'),
 });
 
