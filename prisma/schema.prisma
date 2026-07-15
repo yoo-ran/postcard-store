@@ -68,7 +68,7 @@ model Product {
   name        String
 slug        String   @unique 
   description String?
-  price       Decimal  @db.Decimal(10, 2)
+  price       Int
   stock       Int      @default(0)
   imageUrl    String?
   category    String?
@@ -85,7 +85,7 @@ model Order {
   userId          String
   stripeSessionId String?     @unique
   status          OrderStatus @default(PENDING)
-  total           Decimal     @db.Decimal(10, 2)
+  total           Int
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
@@ -98,7 +98,7 @@ model OrderItem {
   orderId   String
   productId String
   quantity  Int
-  unitPrice Decimal @db.Decimal(10, 2)
+  unitPrice Int
 
   order   Order   @relation(fields: [orderId], references: [id])
   product Product @relation(fields: [productId], references: [id])

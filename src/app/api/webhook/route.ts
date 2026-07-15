@@ -4,10 +4,6 @@ import Stripe from 'stripe';
 import prisma from '@/lib/prisma';
 import { sendOrderConfirmationEmail } from '@/lib/ses';
 
-export const config = {
-  api: { bodyParser: false },
-};
-
 export async function POST(req: NextRequest) {
   const body = await req.text();
   const signature = req.headers.get('stripe-signature');
@@ -73,14 +69,14 @@ export async function POST(req: NextRequest) {
         userId: user.id,
         stripeSessionId: session.id,
         status: 'CONFIRMED',
-        total: (session.amount_total ?? 0) / 100,
+        total: session.amount_total ?? 0,
         orderItems: {
           create:
             fullSession.line_items?.data.map((item) => ({
               productId: (item.price?.product as Stripe.Product).metadata
                 .productId,
               quantity: item.quantity ?? 1,
-              unitPrice: (item.price?.unit_amount ?? 0) / 100,
+              unitPrice: item.price?.unit_amount ?? 0,
             })) ?? [],
         },
       },
