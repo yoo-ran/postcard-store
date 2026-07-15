@@ -8,7 +8,7 @@ import { checkoutLimiter } from '@/lib/ratelimit';
 export async function POST(req: NextRequest) {
   // Require authentication — orders must belong to a user
   const session = await auth();
-  if (!session?.user?.id) {
+  if (!session?.user?.userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
   try {
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
-      metadata: { userId: session.user.id },
+      metadata: { userId: session.user.userId },
       customer_email: session.user.email ?? undefined,
       line_items: cartItems.map((item) => {
         const product = productMap.get(item.productId)!;
