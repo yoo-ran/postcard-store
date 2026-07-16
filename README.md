@@ -1,8 +1,9 @@
 # 🗺️ Postcard Store
 
-A production-grade full-stack ecommerce store for buying and sending postcards — built to demonstrate modern web development practices across frontend, backend, cloud infrastructure, security, and AI integration.
+A production-grade full-stack ecommerce store for buying and sending postcards — built to demonstrate modern web development practices across frontend, backend, cloud infrastructure, security, testing, and AI integration.
 
-> **Live demo:** 🚧 **Coming soon** &nbsp;|&nbsp; **Built by:** [Yoo-Ran](https://github.com/yoo-ran)
+> **Live demo:** [postcard-store.vercel.app](https://postcard-store.vercel.app/)
+> **Built by:** [Yoo-Ran](https://github.com/yoo-ran)
 
 ---
 
@@ -17,9 +18,11 @@ A production-grade full-stack ecommerce store for buying and sending postcards �
 - [AWS Architecture](#-aws-architecture)
 - [AI Recommender](#-ai-recommender)
 - [Security Decisions](#-security-decisions)
+- [Testing](#-testing)
+- [CI/CD Pipeline](#-cicd-pipeline)
+- [Deployment](#-deployment)
 - [Project Structure](#-project-structure)
 - [Key Engineering Decisions](#-key-engineering-decisions)
-- [Tests](#-tests)
 - [Screenshots](#-screenshots)
 
 ---
@@ -35,6 +38,7 @@ A production-grade full-stack ecommerce store for buying and sending postcards �
 | 📦  | **Order management** — full order history per user, real-time status updates                                                        |
 | 📧  | **Order confirmation emails** — triggered via AWS SES on payment success                                                            |
 | 🛡️  | **Security hardened** — AWS WAF, CSP headers, rate limiting, input validation, secrets management                                   |
+| 🧪  | **Fully tested** — 44 unit tests (Vitest) + 21 end-to-end tests (Playwright) running in CI on every PR                              |
 
 ---
 
@@ -52,13 +56,15 @@ A production-grade full-stack ecommerce store for buying and sending postcards �
 
 ### Backend & Database
 
-| Tech                  | Purpose                           |
-| --------------------- | --------------------------------- |
-| Next.js API Routes    | Serverless backend                |
-| Prisma ORM            | Type-safe DB queries + migrations |
-| PostgreSQL on AWS RDS | Managed relational database       |
-| NextAuth.js v5        | Auth with JWT sessions            |
-| Stripe                | Payments + webhook handling       |
+| Tech                  | Purpose                                       |
+| --------------------- | --------------------------------------------- |
+| Next.js API Routes    | Serverless backend                            |
+| Prisma ORM            | Type-safe DB queries + migrations             |
+| Prisma Accelerate     | Connection pooling for serverless deployments |
+| PostgreSQL on AWS RDS | Managed relational database                   |
+| NextAuth.js v5        | Auth with JWT sessions                        |
+| Stripe                | Payments + webhook handling                   |
+| Upstash Redis         | Serverless rate limiting                      |
 
 ### Cloud (AWS)
 
@@ -78,14 +84,14 @@ A production-grade full-stack ecommerce store for buying and sending postcards �
 | Anthropic API (Claude) | AI postcard recommender                    |
 | Zod                    | Validates AI JSON output before DB queries |
 
-### DevOps
+### DevOps & Testing
 
-| Tech           | Purpose                                     |
-| -------------- | ------------------------------------------- |
-| Vercel         | App hosting + edge deployment               |
-| GitHub Actions | CI/CD — lint, type-check, tests on every PR |
-| Vitest         | Unit tests                                  |
-| Playwright     | End-to-end tests                            |
+| Tech               | Purpose                                                |
+| ------------------ | ------------------------------------------------------ |
+| Vercel             | App hosting + edge deployment                          |
+| GitHub Actions     | CI/CD — lint, type-check, unit + E2E tests on every PR |
+| Vitest + happy-dom | Unit tests — cart store, Zod schemas, utilities        |
+| Playwright         | End-to-end tests — cart, auth, and recommender flows   |
 
 ---
 
@@ -96,8 +102,8 @@ Browser
   │
   ▼
 Vercel (Next.js 15 App Router)
-  ├── Server Components  →  AWS RDS (PostgreSQL via Prisma)
-  ├── API Routes         →  Stripe / Anthropic API / AWS SES
+  ├── Server Components  →  Prisma Accelerate  →  AWS RDS (PostgreSQL)
+  ├── API Routes         →  Stripe / Anthropic API / AWS SES / Upstash Redis
   └── Static Assets      →  AWS S3 + CloudFront CDN
                                     │
                               AWS WAF (edge firewall)
@@ -112,7 +118,7 @@ Vercel (Next.js 15 App Router)
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20+
 - PostgreSQL (local or [Supabase](https://supabase.com) free tier)
 - Stripe account (test mode)
 - Anthropic API key
@@ -131,7 +137,7 @@ npm install
 cp .env.example .env.local
 ```
 
-Fill in all values in `.env.local` — see `.env.example` for the full list.
+Fill in all values in `.env.local` — see `.env.example` for the full list. Locally, `DATABASE_URL` is a plain `postgresql://` connection string.
 
 ### 3. Set up the database
 
@@ -293,20 +299,21 @@ flowchart LR
 ### Services
 
 **🪣 S3 — Image Storage**
-Stores the 6 postcard images under the `postcards/` prefix. Not accessed directly by the browser — CloudFront acts as the intermediary, caching and serving assets from the nearest edge location.
+Stores the postcard images under the `postcards/` prefix. Not accessed directly by the browser — CloudFront acts as the intermediary, caching and serving assets from the nearest edge location.
 
 **☁️ CloudFront — CDN**
 Sits in front of S3 and delivers images faster by serving from AWS edge locations closest to the user. The app constructs all image URLs using `NEXT_PUBLIC_CLOUDFRONT_URL`.
 
 **🗄️ RDS PostgreSQL — Database**
-Managed PostgreSQL instance storing all product, cart, and order data. Connected via Prisma using `DATABASE_URL`.
+Managed PostgreSQL instance (ca-central-1) storing all product, cart, and order data. Connected via Prisma — through Prisma Accelerate in production for connection pooling, and directly via `postgresql://` locally.
 
 ### Environment Variables
 
-| Variable                     | Description                                                                                         |
-| ---------------------------- | --------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_CLOUDFRONT_URL` | CloudFront URL including `/postcards` prefix — used to construct image URLs on the client           |
-| `DATABASE_URL`               | Full PostgreSQL connection string for Prisma. Format: `postgresql://user:password@host:5432/dbname` |
+| Variable                     | Description                                                                                        |
+| ---------------------------- | -------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_CLOUDFRONT_URL` | CloudFront URL including `/postcards` prefix — used to construct image URLs on the client          |
+| `DATABASE_URL`               | Prisma connection string — `prisma://` (Accelerate) in production, `postgresql://` everywhere else |
+| `DIRECT_DATABASE_URL`        | Raw RDS `postgresql://` connection string — used for migrations, bypassing the Accelerate pool     |
 
 > See `.env.example` for the full list of required environment variables.
 
@@ -362,10 +369,104 @@ bcrypt is a slow, adaptive hashing algorithm designed for passwords. Unlike MD5 
 The Anthropic API response is treated as untrusted data. Every response is validated against a Zod schema before any product ID touches the database — hallucinated or malformed IDs are caught and rejected gracefully.
 
 **Why rate limit the AI endpoint?**
-Anthropic API calls cost money per token — without rate limiting a single user could run up significant costs in minutes. `/api/recommend` is limited to 10 requests per IP per hour via Upstash Redis. Exceeding the limit returns a 429 with `x-ratelimit-remaining: 0`.
+Anthropic API calls cost money per token — without rate limiting a single user could run up significant costs in minutes. `/api/recommend` is limited to 10 requests per IP per hour via Upstash Redis (sliding window). Exceeding the limit returns a 429 with `x-ratelimit-remaining: 0`.
 
 **Why set security headers (CSP)?**
-Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, and Referrer-Policy headers are set on every response via Next.js config. Prevents clickjacking, MIME sniffing, and XSS injection from third-party scripts.
+Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, and Referrer-Policy headers are set on every response via Next.js config. Prevents clickjacking, MIME sniffing, and XSS injection from third-party scripts.
+
+---
+
+## 🧪 Testing
+
+**65 automated tests** run on every pull request — 44 unit tests and 21 end-to-end tests.
+
+### Unit Tests — Vitest (44 tests)
+
+| Area               | What's covered                                                       |
+| ------------------ | -------------------------------------------------------------------- |
+| Zustand cart store | Add/remove/update items, quantity logic, totals, cents-based pricing |
+| Zod schemas        | Valid and invalid inputs across auth, checkout, and AI schemas       |
+| `formatPrice`      | Cents → formatted currency display                                   |
+
+Runs in a **happy-dom** environment (chosen over jsdom to avoid a CJS/ESM conflict).
+
+```bash
+npm run test
+```
+
+### End-to-End Tests — Playwright (21 tests)
+
+| Flow        | What's covered                                                        |
+| ----------- | --------------------------------------------------------------------- |
+| Cart        | Add to cart, update quantity, remove, cart persistence                |
+| Auth        | Register, login (credentials), protected route redirects              |
+| Recommender | Submit a query, render matched products, handle empty/error responses |
+
+Playwright starts the app automatically via its `webServer` config, so a single command runs the full suite:
+
+```bash
+npm run test:e2e
+```
+
+**Testing notes:**
+
+- **Rate limiting in tests** — all Playwright workers share the same fallback IP, so they would collectively exhaust the real Upstash rate-limit bucket. The `/api/recommend` route accepts a `PLAYWRIGHT_TEST=true` env bypass so E2E runs aren't throttled.
+- **WebKit compatibility** — React controlled inputs don't reliably fire `onChange` with Playwright's `fill()` in WebKit; tests use `click()` + `pressSequentially({ delay: 50 })` instead.
+
+---
+
+## ⚙️ CI/CD Pipeline
+
+Every pull request runs a full pipeline via **GitHub Actions**:
+
+```
+PR opened
+  │
+  ├── Lint (ESLint)
+  ├── Type-check (tsc --noEmit)
+  ├── Unit tests (Vitest)
+  └── E2E tests (Playwright)
+        │
+        └── against an ephemeral PostgreSQL service container
+            (postgresql://postgres:postgres@localhost:5432/test_db)
+```
+
+- The CI database is an **ephemeral Postgres container** — migrated and seeded fresh on every run, so tests never touch RDS
+- All secrets (Stripe test keys, Anthropic API key, auth secrets) are injected via **GitHub Actions secrets**
+- A PR cannot merge until every check passes
+
+---
+
+## 🚢 Deployment
+
+The app is deployed on **Vercel** with **Prisma Accelerate** for connection pooling.
+
+### Why Prisma Accelerate?
+
+Serverless functions open a new database connection per invocation — under load this exhausts RDS's connection limit. Accelerate sits between Vercel and RDS as a global connection pool, so functions share pooled connections instead of opening their own.
+
+### Build Configuration
+
+Vercel uses a dedicated build script:
+
+```json
+"vercel-build": "prisma generate --no-engine && next build"
+```
+
+The `--no-engine` flag is required because the bundled native query engine rejects `prisma://` URLs at build time — in production, queries route through Accelerate's engine instead.
+
+### Environment Strategy
+
+| Environment       | `DATABASE_URL`                      | `DIRECT_DATABASE_URL`                |
+| ----------------- | ----------------------------------- | ------------------------------------ |
+| Vercel Production | `prisma://` (Accelerate)            | Raw RDS `postgresql://` (migrations) |
+| CI                | Ephemeral container `postgresql://` | Same as `DATABASE_URL`               |
+| Local             | Plain `postgresql://`               | Same as `DATABASE_URL`               |
+
+### Production Gotchas Solved
+
+- **Hardcoded base URL** — the homepage originally fetched products from `http://localhost:3000`, which failed silently in production. All internal fetches now use `process.env.NEXT_PUBLIC_APP_URL`.
+- **Silent AI failures** — an incorrect model ID and a leftover debug system prompt caused the recommender to fail without errors in production; both were corrected and covered by E2E tests.
 
 ---
 
@@ -388,6 +489,10 @@ src/
 ├── schemas/             # Zod schemas shared across frontend + API
 ├── store/               # Zustand cart store
 └── types/               # Shared TypeScript types
+
+tests/                   # Vitest unit tests
+e2e/                     # Playwright end-to-end tests
+.github/workflows/       # CI pipeline
 ```
 
 ---
@@ -398,32 +503,28 @@ src/
 | -------------------------------- | -------------------------------------------------------------------------- |
 | Next.js over plain React         | SSR for SEO on product pages; API routes remove need for separate backend  |
 | Prisma over raw SQL              | Auto-generates TypeScript types from schema — zero manual type writing     |
+| Prisma Accelerate in production  | Serverless functions exhaust RDS connections — pooling solves it           |
 | AWS RDS over Supabase            | Intentional — learn VPC config, security groups, and connection management |
 | Stripe Checkout over custom form | PCI-DSS compliance out of the box; never handle raw card data              |
+| Prices stored in cents (cart)    | Integer arithmetic avoids floating-point rounding errors on money          |
 | Zod for AI output                | LLM responses are untrusted — validate before any DB interaction           |
 | bcrypt for passwords             | Slow adaptive hashing — brute-force resistant, never stores plain text     |
 | Middleware for route protection  | Enforces auth at the Edge before any page renders — no client-side gaps    |
+| happy-dom over jsdom             | jsdom hit a CJS/ESM conflict with the toolchain; happy-dom is also faster  |
+| Ephemeral Postgres in CI         | Tests run against a fresh, isolated DB — never touch production data       |
 | `--rebase` Git strategy          | Clean linear history; no merge commits cluttering the log                  |
-
----
-
-## 🧪 Tests
-
-```bash
-# Unit tests
-npm run test
-
-# End-to-end tests
-npm run test:e2e
-```
 
 ---
 
 ## 📸 Screenshots
 
 ![Homepage](screenshots/homepage.png)
-![Cart](screenshots/cart.png)
 ![Product Detail](screenshots/productDetail.png)
+![AI Recommender](screenshots/productDetail.png)
+![Cart](screenshots/cart.png)
+![Checkout](screenshots/productDetail.png)
+![Stripe](screenshots/productDetail.png)
+![Orders](screenshots/productDetail.png)
 ![Login](screenshots/login.png)
 ![Register](screenshots/register.png)
 
@@ -435,4 +536,4 @@ Built by **Yoo-Ran** · [GitHub](https://github.com/yoo-ran) · [LinkedIn](https
 
 ---
 
-_This project was built as a portfolio piece to demonstrate full-stack web development, cloud infrastructure, payment integration, and AI feature development._
+_This project was built as a portfolio piece to demonstrate full-stack web development, cloud infrastructure, payment integration, automated testing, and AI feature development._
